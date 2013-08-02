@@ -26,6 +26,8 @@
 #import <UIKit/UIKit.h>
 
 #import "ReaderDocument.h"
+#import "ReaderMainToolbar.h"
+#import "ReaderMainPagebar.h"
 
 @class ReaderViewController;
 
@@ -38,7 +40,27 @@
 @end
 
 @interface ReaderViewController : UIViewController
-
+{
+	ReaderDocument *document;
+	
+	UIScrollView *theScrollView;
+	
+	ReaderMainToolbar *mainToolbar;
+	
+	ReaderMainPagebar *mainPagebar;
+	
+	NSMutableDictionary *contentViews;
+	
+	UIPrintInteractionController *printInteraction;
+	
+	NSInteger currentPage;
+	
+	CGSize lastAppearSize;
+	
+	NSDate *lastHideTime;
+	
+	BOOL isVisible;
+}
 @property (nonatomic, unsafe_unretained, readwrite) id <ReaderViewControllerDelegate> delegate;
 
 - (id)initWithReaderDocument:(ReaderDocument *)object;

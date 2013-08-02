@@ -31,15 +31,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation ReaderContentView
-{
-	ReaderContentPage *theContentView;
 
-	ReaderContentThumb *theThumbView;
-
-	UIView *theContainerView;
-
-	CGFloat zoomAmount;
-}
 
 #pragma mark Constants
 

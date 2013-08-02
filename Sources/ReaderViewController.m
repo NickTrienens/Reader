@@ -39,27 +39,7 @@
 @end
 
 @implementation ReaderViewController
-{
-	ReaderDocument *document;
 
-	UIScrollView *theScrollView;
-
-	ReaderMainToolbar *mainToolbar;
-
-	ReaderMainPagebar *mainPagebar;
-
-	NSMutableDictionary *contentViews;
-
-	UIPrintInteractionController *printInteraction;
-
-	NSInteger currentPage;
-
-	CGSize lastAppearSize;
-
-	NSDate *lastHideTime;
-
-	BOOL isVisible;
-}
 
 #pragma mark Constants
 

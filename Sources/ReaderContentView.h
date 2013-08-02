@@ -40,6 +40,15 @@
 @end
 
 @interface ReaderContentView : UIScrollView <UIScrollViewDelegate>
+{
+	ReaderContentPage *theContentView;
+	
+	ReaderContentThumb *theThumbView;
+	
+	UIView *theContainerView;
+	
+	CGFloat zoomAmount;
+}
 
 @property (nonatomic, unsafe_unretained, readwrite) id <ReaderContentViewDelegate> message;
 
