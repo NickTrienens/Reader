@@ -42,13 +42,16 @@
 
 @end
 
-@interface ReaderMainToolbar : UIXToolbarView
+@interface ReaderMainToolbar : UINavigationBar
+
+@property(strong) UILabel * titleLabel;
 
 @property (nonatomic, unsafe_unretained, readwrite) id <ReaderMainToolbarDelegate> delegate;
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;
 
 - (void)setBookmarkState:(BOOL)state;
+
 
 - (void)hideToolbar;
 - (void)showToolbar;

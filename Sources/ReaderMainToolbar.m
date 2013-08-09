@@ -58,10 +58,10 @@
 
 #pragma mark ReaderMainToolbar instance methods
 
-- (id)initWithFrame:(CGRect)frame
-{
-	return [self initWithFrame:frame document:nil];
-}
+//- (id)initWithFrame:(CGRect)frame
+//{
+//	return [self initWithFrame:frame document:nil];
+//}
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object
 {
@@ -69,6 +69,10 @@
 
 	if ((self = [super initWithFrame:frame]))
 	{
+		
+		[self setTranslucent:YES];
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		
 		CGFloat viewWidth = self.bounds.size.width;
 
 		UIImage *imageH = [UIImage imageNamed:@"Reader-Button-H"];
@@ -205,21 +209,21 @@
 		{
 			CGRect titleRect = CGRectMake(titleX, BUTTON_Y, titleWidth, TITLE_HEIGHT);
 
-			UILabel *titleLabel = [[UILabel alloc] initWithFrame:titleRect];
+			self.titleLabel = [[UILabel alloc] initWithFrame:titleRect];
 
-			titleLabel.textAlignment = NSTextAlignmentCenter;
-			titleLabel.font = [UIFont systemFontOfSize:19.0f];
-			titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-			titleLabel.textColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
-			titleLabel.shadowColor = [UIColor colorWithWhite:0.65f alpha:1.0f];
-			titleLabel.backgroundColor = [UIColor clearColor];
-			titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-			titleLabel.adjustsFontSizeToFitWidth = YES;
-			titleLabel.minimumScaleFactor = 0.80f;
-			titleLabel.text = [object.fileName stringByDeletingPathExtension];
+			self.titleLabel.textAlignment = NSTextAlignmentCenter;
+			self.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+			self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+			self.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+			self.titleLabel.textColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
+			self.titleLabel.shadowColor = [UIColor colorWithWhite:0.65f alpha:1.0f];
+			self.titleLabel.backgroundColor = [UIColor clearColor];
+			self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+			self.titleLabel.adjustsFontSizeToFitWidth = YES;
+			self.titleLabel.minimumScaleFactor = 0.80f;
+			self.titleLabel.text = [object.fileName stringByDeletingPathExtension];
 
-			[self addSubview:titleLabel]; 
+			[self addSubview:self.titleLabel]; 
 		}
 	}
 
