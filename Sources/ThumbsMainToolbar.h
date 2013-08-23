@@ -38,7 +38,7 @@
 
 @end
 
-@interface ThumbsMainToolbar : UIXToolbarView
+@interface ThumbsMainToolbar : UINavigationBar
 
 @property (nonatomic, unsafe_unretained, readwrite) id <ThumbsMainToolbarDelegate> delegate;
 

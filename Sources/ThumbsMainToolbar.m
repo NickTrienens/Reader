@@ -55,6 +55,10 @@
 {
 	if ((self = [super initWithFrame:frame]))
 	{
+		
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		self.translucent = YES;
+		
 		CGFloat viewWidth = self.bounds.size.width;
 
 		UIImage *imageH = [UIImage imageNamed:@"Reader-Button-H"];
@@ -79,6 +83,7 @@
 		doneButton.exclusiveTouch = YES;
 
 		[self addSubview:doneButton];
+
 
 		titleX += (DONE_BUTTON_WIDTH + BUTTON_SPACE); titleWidth -= (DONE_BUTTON_WIDTH + BUTTON_SPACE);
 

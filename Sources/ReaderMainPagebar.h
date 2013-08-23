@@ -40,9 +40,11 @@
 
 @end
 
-@interface ReaderMainPagebar : UIView
+@interface ReaderMainPagebar : UINavigationBar
 
 @property (nonatomic, unsafe_unretained, readwrite) id <ReaderMainPagebarDelegate> delegate;
+@property(strong) UIView *pageNumberView;
+
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;
 

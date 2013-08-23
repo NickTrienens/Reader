@@ -41,8 +41,6 @@
 
 	UILabel *pageNumberLabel;
 
-	UIView *pageNumberView;
-
 	NSTimer *enableTimer;
 	NSTimer *trackTimer;
 }
@@ -64,12 +62,12 @@
 
 @synthesize delegate;
 
-#pragma mark ReaderMainPagebar class methods
-
-+ (Class)layerClass
-{
-	return [CAGradientLayer class];
-}
+//#pragma mark ReaderMainPagebar class methods
+//
+//+ (Class)layerClass
+//{
+//	return [CAGradientLayer class];
+//}
 
 #pragma mark ReaderMainPagebar instance methods
 
@@ -140,40 +138,36 @@
 
 	if ((self = [super initWithFrame:frame]))
 	{
+		[self setTranslucent:YES];
 		self.autoresizesSubviews = YES;
 		self.userInteractionEnabled = YES;
-		self.contentMode = UIViewContentModeRedraw;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-		self.backgroundColor = [UIColor clearColor];
 
-		CAGradientLayer *layer = (CAGradientLayer *)self.layer;
-		UIColor *liteColor = [UIColor colorWithWhite:0.82f alpha:0.8f];
-		UIColor *darkColor = [UIColor colorWithWhite:0.32f alpha:0.8f];
-		layer.colors = [NSArray arrayWithObjects:(id)liteColor.CGColor, (id)darkColor.CGColor, nil];
-
-		CGRect shadowRect = self.bounds; shadowRect.size.height = 4.0f; shadowRect.origin.y -= shadowRect.size.height;
-
-		ReaderPagebarShadow *shadowView = [[ReaderPagebarShadow alloc] initWithFrame:shadowRect];
-
-		[self addSubview:shadowView]; // Add the shadow to the view
+//		CGRect shadowRect = self.bounds;
+//		shadowRect.size.height = 4.0f;
+//		shadowRect.origin.y -= shadowRect.size.height;
+//		ReaderPagebarShadow *shadowView = [[ReaderPagebarShadow alloc] initWithFrame:shadowRect];
+//		[self addSubview:shadowView]; // Add the shadow to the view
+		
 
 		CGFloat numberY = (0.0f - (PAGE_NUMBER_HEIGHT + PAGE_NUMBER_SPACE));
 		CGFloat numberX = ((self.bounds.size.width - PAGE_NUMBER_WIDTH) / 2.0f);
 		CGRect numberRect = CGRectMake(numberX, numberY, PAGE_NUMBER_WIDTH, PAGE_NUMBER_HEIGHT);
 
-		pageNumberView = [[UIView alloc] initWithFrame:numberRect]; // Page numbers view
+		self.pageNumberView = [[UIView alloc] initWithFrame:numberRect]; // Page numbers view
 
-		pageNumberView.autoresizesSubviews = NO;
-		pageNumberView.userInteractionEnabled = NO;
-		pageNumberView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-		pageNumberView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
+		self.pageNumberView.autoresizesSubviews = NO;
+		self.pageNumberView.userInteractionEnabled = NO;
+		self.pageNumberView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+		self.pageNumberView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
 
-		pageNumberView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-		pageNumberView.layer.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.6f].CGColor;
-		pageNumberView.layer.shadowPath = [UIBezierPath bezierPathWithRect:pageNumberView.bounds].CGPath;
-		pageNumberView.layer.shadowRadius = 2.0f; pageNumberView.layer.shadowOpacity = 1.0f;
+		self.pageNumberView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+		self.pageNumberView.layer.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.6f].CGColor;
+		self.pageNumberView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.pageNumberView.bounds].CGPath;
+		self.pageNumberView.layer.shadowRadius = 2.0f;
+		self.pageNumberView.layer.shadowOpacity = 1.0f;
 
-		CGRect textRect = CGRectInset(pageNumberView.bounds, 4.0f, 2.0f); // Inset the text a bit
+		CGRect textRect = CGRectInset(self.pageNumberView.bounds, 4.0f, 2.0f); // Inset the text a bit
 
 		pageNumberLabel = [[UILabel alloc] initWithFrame:textRect]; // Page numbers label
 
@@ -188,9 +182,9 @@
 		pageNumberLabel.adjustsFontSizeToFitWidth = YES;
 		pageNumberLabel.minimumScaleFactor = 0.80f;
 
-		[pageNumberView addSubview:pageNumberLabel]; // Add label view
+		[self.pageNumberView addSubview:pageNumberLabel]; // Add label view
 
-		[self addSubview:pageNumberView]; // Add page numbers display view
+		[self addSubview:self.pageNumberView]; // Add page numbers display view
 
 		trackControl = [[ReaderTrackControl alloc] initWithFrame:self.bounds]; // Track control view
 
