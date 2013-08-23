@@ -143,11 +143,11 @@
 		self.userInteractionEnabled = YES;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
-//		CGRect shadowRect = self.bounds;
-//		shadowRect.size.height = 4.0f;
-//		shadowRect.origin.y -= shadowRect.size.height;
-//		ReaderPagebarShadow *shadowView = [[ReaderPagebarShadow alloc] initWithFrame:shadowRect];
-//		[self addSubview:shadowView]; // Add the shadow to the view
+		CGRect shadowRect = self.bounds;
+		shadowRect.size.height = 2.0f;
+		shadowRect.origin.y -= shadowRect.size.height;
+		ReaderPagebarShadow *shadowView = [[ReaderPagebarShadow alloc] initWithFrame:shadowRect];
+		[self addSubview:shadowView]; // Add the shadow to the view
 		
 
 		CGFloat numberY = (0.0f - (PAGE_NUMBER_HEIGHT + PAGE_NUMBER_SPACE));
@@ -598,7 +598,7 @@
 		self.backgroundColor = [UIColor clearColor];
 
 		CAGradientLayer *layer = (CAGradientLayer *)self.layer;
-		UIColor *blackColor = [UIColor colorWithWhite:0.42f alpha:1.0f];
+		UIColor *blackColor = [UIColor colorWithWhite:0.42f alpha:0.80f];
 		UIColor *clearColor = [UIColor colorWithWhite:0.42f alpha:0.0f];
 		layer.colors = [NSArray arrayWithObjects:(id)clearColor.CGColor, (id)blackColor.CGColor, nil];
 	}
