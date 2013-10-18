@@ -122,7 +122,7 @@
 	{
 		NSInteger pages = [document.pageCount integerValue]; // Total pages
 
-		NSString *format = NSLocalizedString(@"%d of %d", @"format"); // Format
+		NSString *format = NSLocalizedString(@"%i of %i", @"format"); // Format
 
 		NSString *number = [NSString stringWithFormat:format, page, pages]; // Text
 
@@ -180,7 +180,11 @@
 		pageNumberLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		pageNumberLabel.shadowColor = [UIColor blackColor];
 		pageNumberLabel.adjustsFontSizeToFitWidth = YES;
+<<<<<<< HEAD
 		pageNumberLabel.minimumScaleFactor = 0.80f;
+=======
+		pageNumberLabel.minimumScaleFactor = 0.75f;
+>>>>>>> vfr/Reader/master
 
 		[self.pageNumberView addSubview:pageNumberLabel]; // Add label view
 
