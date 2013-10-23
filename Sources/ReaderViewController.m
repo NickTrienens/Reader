@@ -62,11 +62,11 @@
 {
 	NSInteger count = [document.pageCount integerValue];
 
-	if (count > PAGING_VIEWS) count = PAGING_VIEWS; // Limit
+	//if (count > PAGING_VIEWS) count = PAGING_VIEWS; // Limit
 
 	CGFloat contentHeight = theScrollView.bounds.size.height;
 
-	CGFloat contentWidth = (theScrollView.bounds.size.width * count);
+	CGFloat contentWidth = (theScrollView.bounds.size.width * count-1);
 
 	theScrollView.contentSize = CGSizeMake(contentWidth, contentHeight);
 }
@@ -95,7 +95,9 @@
 
 			ReaderContentView *contentView = [contentViews objectForKey:key];
 
-			contentView.frame = viewRect; if (page == number) contentOffset = viewRect.origin;
+			contentView.frame = viewRect;
+			if (page == number)
+				contentOffset = viewRect.origin;
 
 			viewRect.origin.x += viewRect.size.width; // Next view frame position
 		}
@@ -124,7 +126,8 @@
 		NSInteger maxPage = [document.pageCount integerValue];
 		NSInteger minPage = 1;
 
-		if ((page < minPage) || (page > maxPage)) return;
+		if ((page < minPage) || (page > maxPage))
+			return;
 
 		if (maxPage <= PAGING_VIEWS) // Few pages
 		{
@@ -136,18 +139,23 @@
 			minValue = (page - 1);
 			maxValue = (page + 1);
 
-			if (minValue < minPage)
-				{minValue++; maxValue++;}
-			else
-				if (maxValue > maxPage)
-					{minValue--; maxValue--;}
+			if (minValue < minPage){
+				minValue++;
+				maxValue++;
+			}else{
+				if (maxValue > maxPage){
+					minValue--;
+					maxValue--;
+				}
+			}
 		}
 
 		NSMutableIndexSet *newPageSet = [NSMutableIndexSet new];
 
 		NSMutableDictionary *unusedViews = [contentViews mutableCopy];
 
-		CGRect viewRect = CGRectZero; viewRect.size = theScrollView.bounds.size;
+		CGRect viewRect = CGRectZero;
+		viewRect.size = theScrollView.bounds.size;
 
 		for (NSInteger number = minValue; number <= maxValue; number++)
 		{
@@ -157,21 +165,23 @@
 
 			if (contentView == nil) // Create a brand new document content view
 			{
-				NSURL *fileURL = document.fileURL; NSString *phrase = document.password; // Document properties
+				NSURL *fileURL = document.fileURL;
+				NSString *phrase = document.password; // Document properties
 
 				contentView = [[ReaderContentView alloc] initWithFrame:viewRect fileURL:fileURL page:number password:phrase];
 
-				[theScrollView addSubview:contentView]; [contentViews setObject:contentView forKey:key];
+				[theScrollView addSubview:contentView];
+				[contentViews setObject:contentView forKey:key];
 
-				contentView.message = self; [newPageSet addIndex:number];
+				contentView.message = self;
+				[newPageSet addIndex:number];
 			}
 			else // Reposition the existing content view
 			{
-				contentView.frame = viewRect; [contentView zoomReset];
-
+				contentView.frame = viewRect;
+				[contentView zoomReset];
 				[unusedViews removeObjectForKey:key];
 			}
-
 			viewRect.origin.x += viewRect.size.width;
 		}
 
@@ -470,6 +480,27 @@
 
 #pragma mark UIScrollViewDelegate methods
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	__block NSInteger page = 0;
+	
+	CGFloat contentOffsetX = scrollView.contentOffset.x;
+	
+	[contentViews enumerateKeysAndObjectsUsingBlock: // Enumerate content views
+	 ^(id key, id object, BOOL *stop){
+		 ReaderContentView *contentView = object;
+		 
+		 if (CGRectGetMinX(contentView.frame) <= contentOffsetX && CGRectGetMaxX(contentView.frame) >= contentOffsetX )
+		 {
+			 page = contentView.tag;
+			 *stop = YES;
+		 }
+	 }];
+	
+	if (page != 0) [self showDocumentPage:page]; // Show the page
+}
+
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
 	__block NSInteger page = 0;
@@ -483,7 +514,8 @@
 
 			if (contentView.frame.origin.x == contentOffsetX)
 			{
-				page = contentView.tag; *stop = YES;
+				page = contentView.tag;
+				*stop = YES;
 			}
 		}
 	];

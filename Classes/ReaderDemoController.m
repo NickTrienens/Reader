@@ -26,6 +26,8 @@
 #import "ReaderDemoController.h"
 #import "ReaderViewController.h"
 
+#import "ReaderCollectionViewController.h"
+
 @interface ReaderDemoController () <ReaderViewControllerDelegate>
 
 @end
@@ -180,7 +182,7 @@
 
 	if (document != nil) // Must have a valid ReaderDocument object in order to proceed with things
 	{
-		ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
+		ReaderCollectionViewController *readerViewController = [[ReaderCollectionViewController alloc] initWithReaderDocument:document];
 
 		readerViewController.delegate = self; // Set the ReaderViewController delegate to self
 

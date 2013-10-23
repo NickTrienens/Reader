@@ -40,6 +40,7 @@
 @end
 
 @interface ReaderViewController : UIViewController
+<<<<<<< HEAD
 {
 	ReaderDocument *document;
 	
@@ -61,7 +62,11 @@
 	
 	BOOL isVisible;
 }
+@property (nonatomic, unsafe_unretained, readwrite) id <ReaderViewControllerDelegate> delegate;
+=======
+
 @property (nonatomic, weak, readwrite) id <ReaderViewControllerDelegate> delegate;
+>>>>>>> vfr/Reader/master
 
 - (id)initWithReaderDocument:(ReaderDocument *)object;
 
