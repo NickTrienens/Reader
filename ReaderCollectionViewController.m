@@ -76,6 +76,8 @@
 		if ([self prefersStatusBarHidden] == NO) // Visible status bar
 		{
 			viewRect.origin.y += STATUS_HEIGHT;
+			viewRect.size.height -= STATUS_HEIGHT;
+
 		}
 	}
 	
@@ -91,13 +93,23 @@
 	self.pdfPagesView.showsHorizontalScrollIndicator = NO;
 	self.pdfPagesView.contentMode = UIViewContentModeRedraw;
 	self.pdfPagesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.pdfPagesView.backgroundColor = [UIColor orangeColor];
+	self.pdfPagesView.backgroundColor = [UIColor clearColor];
 	self.pdfPagesView.userInteractionEnabled = YES;
 	self.pdfPagesView.autoresizesSubviews = NO;
 	self.pdfPagesView.dataSource = self;
 	self.pdfPagesView.delegate = self;
 	[self.pdfPagesView registerClass:[ReaderContentCollectionViewCell class] forCellWithReuseIdentifier:@"PDFView"];
 	[self.view addSubview: self.pdfPagesView];
+	
+	viewRect = self.view.bounds; // View controller's view bounds\
+	if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+	{
+		if ([self prefersStatusBarHidden] == NO) // Visible status bar
+		{
+			viewRect.origin.y += STATUS_HEIGHT;
+			
+		}
+	}
 	
 	CGRect toolbarRect = viewRect;
 	toolbarRect.size.height = TOOLBAR_HEIGHT;
@@ -154,7 +166,6 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     NSLog(@"rotated");
-//	[(UICollectionViewFlowLayout*)self.pdfPagesView.collectionViewLayout setItemSize:CGRectInset(self.pdfPagesView.bounds,5,0).size]; // Update content views
 
 }
 
@@ -166,8 +177,7 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	if (isVisible == NO) return; // iOS present modal bodge
-	
-//	[(UICollectionViewFlowLayout*)self.pdfPagesView.collectionViewLayout setItemSize: self.pdfPagesView.bounds.size]; // Update content views
+
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 	{
@@ -179,19 +189,11 @@
 {
 	if (isVisible == NO) return; // iOS present modal bodge
 	
-	//[(UICollectionViewFlowLayout*)self.pdfPagesView.collectionViewLayout setItemSize: self.pdfPagesView.bounds.size]; // Update content views
-	
+
 	lastAppearSize = CGSizeZero; // Reset view size tracking
 }
 
-/*
- - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
- {
- //if (isVisible == NO) return; // iOS present modal bodge
- 
- //if (fromInterfaceOrientation == self.interfaceOrientation) return;
- }
- */
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -215,17 +217,21 @@
 }
 #pragma mark UIScrollView Delegate
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
-	
+  //  NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
+	[self calculateCurrentPage];
 }
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
-
-	 NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	self.throttler ++ ;
+	if(self.throttler%17 ==0 ){
+		[self calculateCurrentPage];
+		self.throttler = 0;
+		//NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
+	}
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
 	
 	
-	NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
+	//NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
 	
 	ReaderContentCollectionViewCell *targetView = (ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0];
 	self.currentPage = targetView.pageNumber;
@@ -233,11 +239,47 @@
 
 	[mainPagebar updatePagebar]; // Update the pagebar display
 
+	self.throttler = 10;
 	
 }
 
+-(void)calculateCurrentPage{
 	
-	
+	ReaderContentCollectionViewCell *targetView = nil;
+	CGRect tmpViewFrame	= self.pdfPagesView.frame;
+	for (ReaderContentCollectionViewCell * tmpView in [self.pdfPagesView visibleCells]) {
+		CGRect tmpFrame = [self.view convertRect:tmpView.frame fromView:self.pdfPagesView];
+		//NSLog(@"%f < %f", CGRectGetMinX(tmpFrame), CGRectGetMinX(tmpViewFrame));
+		if( CGRectGetMinX(tmpFrame) < CGRectGetMinX(tmpViewFrame)){
+			//NSLog(@"%f > %f", CGRectGetMaxX(tmpFrame), CGRectGetMidX(tmpViewFrame));
+			
+			if(CGRectGetMaxX(tmpFrame) > CGRectGetMidX(tmpViewFrame)){
+				targetView = tmpView;
+				break;
+			}
+		}
+		
+		//NSLog(@"%f > %f", CGRectGetMinX(tmpFrame), CGRectGetMinX(tmpViewFrame));
+		if( CGRectGetMinX(tmpFrame) > CGRectGetMinX(self.view.frame)){
+			
+			//NSLog(@"%f > %f", CGRectGetMinX(tmpFrame), CGRectGetMidX(tmpViewFrame));
+			if(CGRectGetMinX(tmpFrame) > CGRectGetMidX(self.view.frame)){
+				targetView = tmpView;
+				break;
+			}
+		}
+		
+	}
+	if(targetView != nil && targetView.pageNumber != self.currentPage){
+		NSLog(@"%d", targetView.pageNumber);
+		self.currentPage = targetView.pageNumber;
+		self.document.pageNumber = @(targetView.pageNumber);
+		
+		[mainPagebar updatePagebar]; // Update the pagebar display
+	}
+
+}
+
 
 
 
@@ -512,6 +554,145 @@
 - (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page
 {
 	[self.pdfPagesView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+}
+
+
+- (void)tappedInToolbar:(ReaderMainToolbar *)toolbar printButton:(UIButton *)button
+{
+#if (READER_ENABLE_PRINT == TRUE) // Option
+	
+	Class printInteractionController = NSClassFromString(@"UIPrintInteractionController");
+	
+	if ((printInteractionController != nil) && [printInteractionController isPrintingAvailable])
+	{
+		NSURL *fileURL = document.fileURL; // Document file URL
+		
+		printInteraction = [printInteractionController sharedPrintController];
+		
+		if ([printInteractionController canPrintURL:fileURL] == YES) // Check first
+		{
+			UIPrintInfo *printInfo = [NSClassFromString(@"UIPrintInfo") printInfo];
+			
+			printInfo.duplex = UIPrintInfoDuplexLongEdge;
+			printInfo.outputType = UIPrintInfoOutputGeneral;
+			printInfo.jobName = document.fileName;
+			
+			printInteraction.printInfo = printInfo;
+			printInteraction.printingItem = fileURL;
+			printInteraction.showsPageRange = YES;
+			
+			if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+			{
+				[printInteraction presentFromRect:button.bounds inView:button animated:YES completionHandler:
+				 ^(UIPrintInteractionController *pic, BOOL completed, NSError *error)
+				 {
+#ifdef DEBUG
+					 if ((completed == NO) && (error != nil)) NSLog(@"%s %@", __FUNCTION__, error);
+#endif
+				 }
+				 ];
+			}
+			else // Presume UIUserInterfaceIdiomPhone
+			{
+				[printInteraction presentAnimated:YES completionHandler:
+				 ^(UIPrintInteractionController *pic, BOOL completed, NSError *error)
+				 {
+#ifdef DEBUG
+					 if ((completed == NO) && (error != nil)) NSLog(@"%s %@", __FUNCTION__, error);
+#endif
+				 }
+				 ];
+			}
+		}
+	}
+	
+#endif // end of READER_ENABLE_PRINT Option
+}
+
+- (void)tappedInToolbar:(ReaderMainToolbar *)toolbar emailButton:(UIButton *)button
+{
+#if (READER_ENABLE_MAIL == TRUE) // Option
+	
+	if ([MFMailComposeViewController canSendMail] == NO) return;
+	
+	
+	unsigned long long fileSize = [document.fileSize unsignedLongLongValue];
+	
+	if (fileSize < (unsigned long long)15728640) // Check attachment size limit (15MB)
+	{
+		NSURL *fileURL = document.fileURL; NSString *fileName = document.fileName; // Document
+		
+		NSData *attachment = [NSData dataWithContentsOfURL:fileURL options:(NSDataReadingMapped|NSDataReadingUncached) error:nil];
+		
+		if (attachment != nil) // Ensure that we have valid document file attachment data
+		{
+			MFMailComposeViewController *mailComposer = [MFMailComposeViewController new];
+			
+			[mailComposer addAttachmentData:attachment mimeType:@"application/pdf" fileName:fileName];
+			
+			[mailComposer setSubject:fileName]; // Use the document file name for the subject
+			
+			mailComposer.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+			mailComposer.modalPresentationStyle = UIModalPresentationFormSheet;
+			
+			mailComposer.mailComposeDelegate = self; // Set the delegate
+			
+			[self presentViewController:mailComposer animated:YES completion:NULL];
+		}
+	}
+	
+#endif // end of READER_ENABLE_MAIL Option
+}
+
+- (void)tappedInToolbar:(ReaderMainToolbar *)toolbar markButton:(UIButton *)button
+{
+	
+	NSInteger page = [self.document.pageNumber integerValue];
+	
+	if ([self.document.bookmarks containsIndex:page]) // Remove bookmark
+	{
+		[mainToolbar setBookmarkState:NO];
+		[self.document.bookmarks removeIndex:page];
+	}
+	else // Add the bookmarked page index to the bookmarks set
+	{
+		[mainToolbar setBookmarkState:YES];
+		[self.document.bookmarks addIndex:page];
+	}
+}
+
+#pragma mark MFMailComposeViewControllerDelegate methods
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+#ifdef DEBUG
+	if ((result == MFMailComposeResultFailed) && (error != NULL)) NSLog(@"%@", error);
+#endif
+	
+	[self dismissViewControllerAnimated:YES completion:NULL]; // Dismiss
+}
+
+#pragma mark ThumbsViewControllerDelegate methods
+
+- (void)dismissThumbsViewController:(ThumbsViewController *)viewController
+{
+	[self updateToolbarBookmarkIcon]; // Update bookmark icon
+	
+	[self dismissViewControllerAnimated:YES completion:NULL]; // Dismiss
+}
+
+- (void)updateToolbarBookmarkIcon
+{
+	NSInteger page = [self.document.pageNumber integerValue];
+	
+	BOOL bookmarked = [self.document.bookmarks containsIndex:page];
+	
+	[mainToolbar setBookmarkState:bookmarked]; // Update
+}
+
+- (void)thumbsViewController:(ThumbsViewController *)viewController gotoPage:(NSInteger)page
+{
+	[self showDocumentPage:page]; // Show the page
 }
 
 

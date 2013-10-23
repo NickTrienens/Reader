@@ -35,7 +35,7 @@
 
 
 
-@interface ReaderCollectionViewController : UIViewController<UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate, ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate, UICollectionViewDataSource, UIScrollViewDelegate>
+@interface ReaderCollectionViewController : UIViewController<UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate, ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UICollectionViewDelegate>
 {
 	
 	ReaderMainToolbar *mainToolbar;
@@ -51,7 +51,7 @@
 }
 
 @property(assign) NSInteger currentPage;
-
+@property(assign) NSInteger throttler;
 @property(strong) ReaderDocument *document;
 @property (nonatomic, weak, readwrite) id <ReaderCollectionViewControllerDelegate> delegate;
 - (id)initWithReaderDocument:(ReaderDocument *)object;

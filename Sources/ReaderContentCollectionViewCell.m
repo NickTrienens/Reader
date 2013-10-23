@@ -16,7 +16,7 @@
     if (self) {
         // Initialization code
 		
-		self.contentView.backgroundColor = [UIColor redColor];
+		self.contentView.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
