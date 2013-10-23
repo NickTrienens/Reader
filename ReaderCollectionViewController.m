@@ -65,6 +65,8 @@
     [super viewDidLoad];
 	assert(self.document != nil); // Must have a valid ReaderDocument
 	
+	self.currentPage = [self.document.pageNumber integerValue];
+	
 	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	
 	CGRect viewRect = self.view.bounds; // View controller's view bounds
@@ -79,9 +81,6 @@
 	
 	
 	EdgeToEdgeCollectionViewLayout * tmpFlowLayout =  [[EdgeToEdgeCollectionViewLayout alloc] init];
-//	tmpFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-//	tmpFlowLayout.minimumInteritemSpacing =0;
-//	tmpFlowLayout.sectionInset = UIEdgeInsetsZero;
 	
 	self.pdfPagesView = [[UICollectionView alloc] initWithFrame:viewRect collectionViewLayout:tmpFlowLayout];
 	self.pdfPagesView.scrollsToTop = NO;
@@ -95,21 +94,17 @@
 	self.pdfPagesView.backgroundColor = [UIColor orangeColor];
 	self.pdfPagesView.userInteractionEnabled = YES;
 	self.pdfPagesView.autoresizesSubviews = NO;
-	
-//	tmpFlowLayout.itemSize = self.pdfPagesView.frame.size;
-	
 	self.pdfPagesView.dataSource = self;
+	self.pdfPagesView.delegate = self;
 	[self.pdfPagesView registerClass:[ReaderContentCollectionViewCell class] forCellWithReuseIdentifier:@"PDFView"];
-	
 	[self.view addSubview: self.pdfPagesView];
 	
 	CGRect toolbarRect = viewRect;
 	toolbarRect.size.height = TOOLBAR_HEIGHT;
 	
 	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:toolbarRect document:self.document]; // At top
-	
+	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	mainToolbar.delegate = self;
-	
 	[self.view addSubview:mainToolbar];
 	
 	CGRect pagebarRect = viewRect;
@@ -117,10 +112,9 @@
 	pagebarRect.origin.y = (viewRect.size.height - PAGEBAR_HEIGHT);
 	
 	mainPagebar = [[ReaderMainPagebar alloc] initWithFrame:pagebarRect document:self.document]; // At bottom
-	
 	mainPagebar.delegate = self;
-	
 	[self.view addSubview:mainPagebar];
+	
 	
 	UITapGestureRecognizer *singleTapOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 	singleTapOne.numberOfTouchesRequired = 1;
@@ -209,6 +203,42 @@
 }
 
 
+-(void)showDocumentPage:(NSInteger)page
+{
+	self.currentPage = page;
+	self.document.pageNumber = @(page);
+	[self.pdfPagesView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+
+	[mainPagebar updatePagebar]; // Update the pagebar display
+
+	
+}
+#pragma mark UIScrollView Delegate
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
+	
+}
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+
+	 NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+	
+	
+	NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
+	
+	ReaderContentCollectionViewCell *targetView = (ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0];
+	self.currentPage = targetView.pageNumber;
+	self.document.pageNumber = @(targetView.pageNumber);
+
+	[mainPagebar updatePagebar]; // Update the pagebar display
+
+	
+}
+
+	
+	
+
 
 
 #pragma mark UICollection Data source
@@ -223,7 +253,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
 	ReaderContentCollectionViewCell *cell = (ReaderContentCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PDFView" forIndexPath:indexPath];
 		
-	[cell configureWithDocument:self.document.fileURL password:self.document.password page:indexPath.item+1];
+	[cell configureWithDocument:self.document page:indexPath.item+1];
 	
 	return cell;
 	
@@ -233,53 +263,37 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)recognizer shouldReceiveTouch:(UITouch *)touch
 {
-	if ([touch.view isKindOfClass:[UICollectionView class]]) return YES;
-	
+	if ([touch.view isKindOfClass:[UICollectionView class]] || [touch.view isDescendantOfView:self.pdfPagesView]){
+		return YES;
+	}
+
 	return NO;
 }
 
 #pragma mark UIGestureRecognizer action methods
 
-- (void)decrementPageNumber
-{
-	if (self.pdfPagesView.tag == 0) // Scroll view did end
+- (void)decrementPageNumber {
+	
+	NSInteger maxPage = [self.document.pageCount integerValue];
+	NSInteger minPage = 1; // Minimum
+	
+	if ((maxPage > minPage) && (self.currentPage != minPage))
 	{
-		NSInteger page = [self.document.pageNumber integerValue];
-		NSInteger maxPage = [self.document.pageCount integerValue];
-		NSInteger minPage = 1; // Minimum
-		
-		if ((maxPage > minPage) && (page != minPage))
-		{
-			CGPoint contentOffset = self.pdfPagesView.contentOffset;
-			
-			contentOffset.x -= self.pdfPagesView.bounds.size.width; // -= 1
-			
-			[self.pdfPagesView setContentOffset:contentOffset animated:YES];
-			
-			self.pdfPagesView.tag = (page - 1); // Decrement page number
-		}
+		[self showDocumentPage:self.currentPage-1];
 	}
+
 }
 
-- (void)incrementPageNumber
-{
-	if (self.pdfPagesView.tag == 0) // Scroll view did end
+- (void)incrementPageNumber {
+	
+	NSInteger maxPage = [self.document.pageCount integerValue];
+	NSInteger minPage = 1; // Minimum
+	
+	if ((maxPage > minPage) && (self.currentPage != maxPage))
 	{
-		NSInteger page = [self.document.pageNumber integerValue];
-		NSInteger maxPage = [self.document.pageCount integerValue];
-		NSInteger minPage = 1; // Minimum
-		
-		if ((maxPage > minPage) && (page != maxPage))
-		{
-			CGPoint contentOffset = self.pdfPagesView.contentOffset;
-			
-			contentOffset.x += self.pdfPagesView.bounds.size.width; // += 1
-			
-			[self.pdfPagesView setContentOffset:contentOffset animated:YES];
-			
-			self.pdfPagesView.tag = (page + 1); // Increment page number
-		}
+		[self showDocumentPage:self.currentPage+1];
 	}
+	
 }
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer
@@ -335,17 +349,22 @@
 					{
 						NSInteger value = [target integerValue]; // Number
 						
-						//[self showDocumentPage:value]; // Show the page
+						[self showDocumentPage:value]; // Show the page
 					}
 				}
 			}
 			else // Nothing active tapped in the target content view
 			{
-				if ([lastHideTime timeIntervalSinceNow] < -0.75) // Delay since hide
+				if ( true || [lastHideTime timeIntervalSinceNow] < -0.75) // Delay since hide
 				{
 					if ((mainToolbar.hidden == YES) || (mainPagebar.hidden == YES))
 					{
-						[mainToolbar showToolbar]; [mainPagebar showPagebar]; // Show
+						[mainToolbar showToolbar];
+						[mainPagebar showPagebar]; // Show
+					}else{
+						[mainToolbar hideToolbar];
+						[mainPagebar hidePagebar]; // Hide
+
 					}
 				}
 			}
@@ -359,7 +378,8 @@
 		
 		if (CGRectContainsPoint(nextPageRect, point)) // page++ area
 		{
-			[self incrementPageNumber]; return;
+			[self incrementPageNumber];
+			return;
 		}
 		
 		CGRect prevPageRect = viewRect;
@@ -367,7 +387,8 @@
 		
 		if (CGRectContainsPoint(prevPageRect, point)) // page-- area
 		{
-			[self decrementPageNumber]; return;
+			[self decrementPageNumber];
+			return;
 		}
 	}
 }
@@ -390,12 +411,14 @@
 			{
 				case 1: // One finger double tap: zoom ++
 				{
-					[targetView zoomIncrement]; break;
+					[targetView zoomIncrement];
+					break;
 				}
 					
 				case 2: // Two finger double tap: zoom --
 				{
-					[targetView zoomDecrement]; break;
+					[targetView zoomDecrement];
+					break;
 				}
 			}
 			
@@ -408,7 +431,8 @@
 		
 		if (CGRectContainsPoint(nextPageRect, point)) // page++ area
 		{
-			[self incrementPageNumber]; return;
+			[self incrementPageNumber];
+			return;
 		}
 		
 		CGRect prevPageRect = viewRect;
@@ -416,8 +440,32 @@
 		
 		if (CGRectContainsPoint(prevPageRect, point)) // page-- area
 		{
-			[self decrementPageNumber]; return;
+			[self decrementPageNumber];
+			return;
 		}
+	}
+}
+
+#pragma mark ReaderContentViewDelegate methods
+
+- (void)contentView:(ReaderContentView *)contentView touchesBegan:(NSSet *)touches
+{
+	if ((mainToolbar.hidden == NO) || (mainPagebar.hidden == NO))
+	{
+		if (touches.count == 1) // Single touches only
+		{
+			UITouch *touch = [touches anyObject]; // Touch info
+			
+			CGPoint point = [touch locationInView:self.view]; // Touch location
+			
+			CGRect areaRect = CGRectInset(self.view.bounds, TAP_AREA_SIZE, TAP_AREA_SIZE);
+			
+			if (CGRectContainsPoint(areaRect, point) == false) return;
+		}
+		
+		[mainToolbar hideToolbar]; [mainPagebar hidePagebar]; // Hide
+		
+		lastHideTime = [NSDate date];
 	}
 }
 

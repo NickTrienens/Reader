@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "ReaderContentView.h"
+#import "ReaderDocument.h"
+
+
 @interface ReaderContentCollectionViewCell : UICollectionViewCell
 
 @property(strong) ReaderContentView * pdfView;
 
-@property(strong) NSURL * fileURL;
+@property(strong) ReaderDocument * document;
 @property(assign) NSInteger pageNumber;
-@property(strong) NSString * passPhrase;
 
--(void)configureWithDocument:(NSURL *)inFileURL password:(NSString*)inPassword page:(NSInteger)inPageNumber;
+-(void)configureWithDocument:(ReaderDocument *)inDocument page:(NSInteger)inPageNumber;
 
 @end

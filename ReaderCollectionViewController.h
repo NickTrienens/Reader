@@ -35,15 +35,13 @@
 
 
 
-@interface ReaderCollectionViewController : UIViewController<UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate,
-ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate, UICollectionViewDataSource>
+@interface ReaderCollectionViewController : UIViewController<UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate, ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate, UICollectionViewDataSource, UIScrollViewDelegate>
 {
 	
 	ReaderMainToolbar *mainToolbar;
 	
 	ReaderMainPagebar *mainPagebar;
 	
-	NSInteger currentPage;
 	
 	CGSize lastAppearSize;
 	
@@ -51,7 +49,10 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
 	
 	BOOL isVisible;
 }
-@property(strong) 	ReaderDocument *document;
+
+@property(assign) NSInteger currentPage;
+
+@property(strong) ReaderDocument *document;
 @property (nonatomic, weak, readwrite) id <ReaderCollectionViewControllerDelegate> delegate;
 - (id)initWithReaderDocument:(ReaderDocument *)object;
 

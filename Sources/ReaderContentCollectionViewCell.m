@@ -24,9 +24,11 @@
 
 -(void)createContentView{
 	
-	self.pdfView = [[ReaderContentView alloc] initWithFrame:self.contentView.bounds fileURL:self.fileURL page:self.pageNumber password:self.passPhrase];
+	self.pdfView = [[ReaderContentView alloc] initWithFrame:self.contentView.bounds fileURL:self.document.fileURL page:self.pageNumber password:self.document.password];
 
 	[self.contentView addSubview:self.pdfView];
+	[self.pdfView showPageThumb:self.document.fileURL page:self.pageNumber password:self.document.password guid:self.document.guid];
+
 	NSLog(@"pageview  created for : %d", self.pageNumber);
 		
 }
@@ -35,14 +37,15 @@
 	
 	[self.pdfView removeFromSuperview];
 	self.pdfView = nil;
+	self.document  =nil;
 }
 
--(void)configureWithDocument:(NSURL *)inFileURL password:(NSString*)inPassword page:(NSInteger)inPageNumber{
-	self.fileURL = inFileURL;
-	self.passPhrase = inPassword;
+-(void)configureWithDocument:(ReaderDocument *)inDocument page:(NSInteger)inPageNumber{
+	self.document = inDocument;
 	self.pageNumber = inPageNumber;
 	
 	[self createContentView];
+	
 	
 }
 
