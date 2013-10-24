@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		
+		self.contentClassName = @"ReaderContentView";
 		self.contentView.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -23,8 +23,8 @@
 
 
 -(void)createContentView{
-	
-	self.pdfView = [[ReaderContentView alloc] initWithFrame:self.contentView.bounds fileURL:self.document.fileURL page:self.pageNumber password:self.document.password];
+
+	self.pdfView = [[NSClassFromString(self.contentClassName) alloc] initWithFrame:self.contentView.bounds fileURL:self.document.fileURL page:self.pageNumber password:self.document.password];
 
 	[self.contentView addSubview:self.pdfView];
 	[self.pdfView showPageThumb:self.document.fileURL page:self.pageNumber password:self.document.password guid:self.document.guid];

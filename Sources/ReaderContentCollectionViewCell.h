@@ -18,6 +18,8 @@
 @property(strong) ReaderDocument * document;
 @property(assign) NSInteger pageNumber;
 
+@property(strong) NSString * contentClassName;
+
 -(void)configureWithDocument:(ReaderDocument *)inDocument page:(NSInteger)inPageNumber;
 
 @end
