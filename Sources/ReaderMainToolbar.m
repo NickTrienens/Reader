@@ -141,22 +141,21 @@
 		}
 
 #endif // end of READER_ENABLE_PRINT Option
-		UINavigationItem * tmpItem = nil;
 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 		{
 			
-			tmpItem = [[UINavigationItem alloc] initWithTitle:[object.fileName stringByDeletingPathExtension]];
-			self.items = @[tmpItem];
-			tmpItem.leftBarButtonItems = tmpLeftButtonsArray;
-			tmpItem.rightBarButtonItems = tmpRightButtonsArray;
+			self.item = [[UINavigationItem alloc] initWithTitle:[object.fileName stringByDeletingPathExtension]];
+			self.items = @[self.item];
+			self.item.leftBarButtonItems = tmpLeftButtonsArray;
+			self.item.rightBarButtonItems = tmpRightButtonsArray;
 
 		}
-		if(tmpItem == nil){
+		if(self.item == nil){
 			
-			tmpItem = [[UINavigationItem alloc] init];
-			tmpItem.leftBarButtonItems = tmpLeftButtonsArray;
-			tmpItem.rightBarButtonItems = tmpRightButtonsArray;
-			self.items = @[tmpItem];
+			self.item = [[UINavigationItem alloc] init];
+			self.item.leftBarButtonItems = tmpLeftButtonsArray;
+			self.item.rightBarButtonItems = tmpRightButtonsArray;
+			self.items = @[self.item];
 
 		}
 
