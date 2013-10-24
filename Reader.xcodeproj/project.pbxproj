@@ -64,6 +64,7 @@
 		45D5AD9F1610E66B00706B9A /* HISTORY.md in Resources */ = {isa = PBXBuildFile; fileRef = 45D5AD9E1610E66B00706B9A /* HISTORY.md */; };
 		45D5ADA31610EADD00706B9A /* ReaderDocumentOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */; };
 		80552DA118183C3100F7ED62 /* Reader.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 80552DA018183C3100F7ED62 /* Reader.pdf */; };
+		80552DA51818992400F7ED62 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80552DA41818992400F7ED62 /* CFNetwork.framework */; };
 		8072BCB01811809500D69542 /* ReaderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCAF1811809500D69542 /* ReaderCollectionViewController.m */; };
 		8072BCB31811837500D69542 /* ReaderContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCB21811837500D69542 /* ReaderContentCollectionViewCell.m */; };
 		8072BCB61811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCB51811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m */; };
@@ -153,6 +154,7 @@
 		45D5ADA11610EADC00706B9A /* ReaderDocumentOutline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderDocumentOutline.h; path = Sources/ReaderDocumentOutline.h; sourceTree = "<group>"; };
 		45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderDocumentOutline.m; path = Sources/ReaderDocumentOutline.m; sourceTree = "<group>"; };
 		80552DA018183C3100F7ED62 /* Reader.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = Reader.pdf; path = Resources/Reader.pdf; sourceTree = "<group>"; };
+		80552DA41818992400F7ED62 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8072BCAE1811809500D69542 /* ReaderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCollectionViewController.h; sourceTree = "<group>"; };
 		8072BCAF1811809500D69542 /* ReaderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCollectionViewController.m; sourceTree = "<group>"; };
 		8072BCB11811837500D69542 /* ReaderContentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderContentCollectionViewCell.h; path = Sources/ReaderContentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80552DA51818992400F7ED62 /* CFNetwork.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -239,6 +242,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80552DA41818992400F7ED62 /* CFNetwork.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
@@ -503,11 +507,16 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/nicktrienens/GHCode/Reader,
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Reader-Prefix.pch";
 				INFOPLIST_FILE = "Reader-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Reader;
 			};
 			name = Debug;
@@ -518,9 +527,14 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/nicktrienens/GHCode/Reader,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Reader-Prefix.pch";
 				INFOPLIST_FILE = "Reader-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Reader;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -559,9 +573,14 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/nicktrienens/GHCode/Reader,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Reader-Prefix.pch";
 				INFOPLIST_FILE = "Reader-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Reader;
 			};
 			name = Testing;

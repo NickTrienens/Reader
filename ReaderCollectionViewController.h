@@ -42,12 +42,7 @@
 	
 	ReaderMainPagebar *mainPagebar;
 	
-	
-	CGSize lastAppearSize;
-	
-	NSDate *lastHideTime;
-	
-	BOOL isVisible;
+
 }
 
 @property(assign) NSInteger currentPage;

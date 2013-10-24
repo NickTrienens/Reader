@@ -85,6 +85,8 @@
 
 		CGFloat leftButtonX = BUTTON_X; // Left button start X position
 
+		NSMutableArray * tmpButtonArray = [NSMutableArray array];
+		
 #if (READER_STANDALONE == FALSE) // Option
 
 		UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -207,23 +209,26 @@
 
 		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 		{
-			CGRect titleRect = CGRectMake(titleX, BUTTON_Y, titleWidth, TITLE_HEIGHT);
-
-			self.titleLabel = [[UILabel alloc] initWithFrame:titleRect];
-
-			self.titleLabel.textAlignment = NSTextAlignmentCenter;
-			self.titleLabel.font = [UIFont systemFontOfSize:19.0f];
-			self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			self.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-			self.titleLabel.textColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
-			self.titleLabel.shadowColor = [UIColor colorWithWhite:0.65f alpha:1.0f];
-			self.titleLabel.backgroundColor = [UIColor clearColor];
-			self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-			self.titleLabel.adjustsFontSizeToFitWidth = YES;
-			self.titleLabel.minimumScaleFactor = 0.80f;
-			self.titleLabel.text = [object.fileName stringByDeletingPathExtension];
-
-			[self addSubview:self.titleLabel]; 
+			
+			UINavigationItem * tmpItem = [[UINavigationItem alloc] initWithTitle:[object.fileName stringByDeletingPathExtension]];
+			self.items = @[tmpItem];
+//			CGRect titleRect = CGRectMake(titleX, BUTTON_Y, titleWidth, TITLE_HEIGHT);
+//
+//			self.titleLabel = [[UILabel alloc] initWithFrame:titleRect];
+//
+//			self.titleLabel.textAlignment = NSTextAlignmentCenter;
+//			self.titleLabel.font = [UIFont systemFontOfSize:19.0f];
+//			self.titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//			self.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+//			self.titleLabel.textColor = [UIColor colorWithWhite:0.0f alpha:1.0f];
+//			self.titleLabel.shadowColor = [UIColor colorWithWhite:0.65f alpha:1.0f];
+//			self.titleLabel.backgroundColor = [UIColor clearColor];
+//			self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+//			self.titleLabel.adjustsFontSizeToFitWidth = YES;
+//			self.titleLabel.minimumScaleFactor = 0.80f;
+//			self.titleLabel.text = [object.fileName stringByDeletingPathExtension];
+//
+//			[self addSubview:self.titleLabel]; 
 		}
 	}
 

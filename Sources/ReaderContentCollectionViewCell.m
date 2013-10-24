@@ -29,7 +29,7 @@
 	[self.contentView addSubview:self.pdfView];
 	[self.pdfView showPageThumb:self.document.fileURL page:self.pageNumber password:self.document.password guid:self.document.guid];
 
-	NSLog(@"pageview  created for : %d", self.pageNumber);
+	//NSLog(@"pageview  created for : %d", self.pageNumber);
 		
 }
 
@@ -38,6 +38,13 @@
 	[self.pdfView removeFromSuperview];
 	self.pdfView = nil;
 	self.document  =nil;
+}
+
+-(void)dealloc{
+	
+	[self.pdfView removeFromSuperview];
+	self.pdfView = nil;
+	self.document = nil;
 }
 
 -(void)configureWithDocument:(ReaderDocument *)inDocument page:(NSInteger)inPageNumber{

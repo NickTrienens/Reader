@@ -176,7 +176,7 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	if (isVisible == NO) return; // iOS present modal bodge
+	
 
 	
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -187,10 +187,7 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
-	if (isVisible == NO) return; // iOS present modal bodge
 	
-
-	lastAppearSize = CGSizeZero; // Reset view size tracking
 }
 
 
@@ -276,6 +273,7 @@
 		self.document.pageNumber = @(targetView.pageNumber);
 		
 		[mainPagebar updatePagebar]; // Update the pagebar display
+		[self updateToolbarBookmarkIcon];
 	}
 
 }
@@ -397,8 +395,7 @@
 			}
 			else // Nothing active tapped in the target content view
 			{
-				if ( true || [lastHideTime timeIntervalSinceNow] < -0.75) // Delay since hide
-				{
+			
 					if ((mainToolbar.hidden == YES) || (mainPagebar.hidden == YES))
 					{
 						[mainToolbar showToolbar];
@@ -408,7 +405,7 @@
 						[mainPagebar hidePagebar]; // Hide
 
 					}
-				}
+				
 			}
 			
 			return;
@@ -505,9 +502,9 @@
 			if (CGRectContainsPoint(areaRect, point) == false) return;
 		}
 		
-		[mainToolbar hideToolbar]; [mainPagebar hidePagebar]; // Hide
+		[mainToolbar hideToolbar];
+		[mainPagebar hidePagebar]; // Hide
 		
-		lastHideTime = [NSDate date];
 	}
 }
 
