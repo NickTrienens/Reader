@@ -54,4 +54,6 @@
 @property(strong) UICollectionView * pdfPagesView;
 
 
+-(void)showDocumentPage:(NSInteger)page;
+
 @end
