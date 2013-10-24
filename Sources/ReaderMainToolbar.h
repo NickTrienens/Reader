@@ -45,6 +45,7 @@
 @interface ReaderMainToolbar : UINavigationBar
 
 @property(strong) UILabel * titleLabel;
+@property(strong) UIButton * flagButton;
 
 @property (nonatomic, weak, readwrite) id <ReaderMainToolbarDelegate> delegate;
 
