@@ -204,6 +204,9 @@
 
 -(void)showDocumentPage:(NSInteger)page
 {
+	page = MAX(1, page);
+	page = MIN([self.document.pageCount intValue], page);
+	
 	self.currentPage = page;
 	self.document.pageNumber = @(page);
 	[self.pdfPagesView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
