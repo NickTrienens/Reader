@@ -9,6 +9,7 @@
 #import "ReaderCollectionViewController.h"
 #import "EdgeToEdgeCollectionViewLayout.h"
 
+#import "ReaderPageBarCollectionView.h"
 
 
 #define STATUS_HEIGHT 20.0f
@@ -120,10 +121,10 @@
 	[self.view addSubview:mainToolbar];
 	
 	CGRect pagebarRect = viewRect;
-	pagebarRect.size.height = PAGEBAR_HEIGHT;
-	pagebarRect.origin.y = (viewRect.size.height - PAGEBAR_HEIGHT);
+	pagebarRect.size.height = 90;
+	pagebarRect.origin.y = (viewRect.size.height - pagebarRect.size.height);
 	
-	mainPagebar = [[ReaderMainPagebar alloc] initWithFrame:pagebarRect document:self.document]; // At bottom
+	mainPagebar = [[ReaderPageBarCollectionView alloc] initWithFrame:pagebarRect document:self.document]; // At bottom
 	mainPagebar.delegate = self;
 	[self.view addSubview:mainPagebar];
 	

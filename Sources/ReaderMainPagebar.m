@@ -156,6 +156,7 @@
 		CGFloat numberX = ((self.bounds.size.width - PAGE_NUMBER_WIDTH) / 2.0f);
 		CGRect numberRect = CGRectMake(numberX, numberY, PAGE_NUMBER_WIDTH, PAGE_NUMBER_HEIGHT);
 
+		
 		pageNumberView = [[UIView alloc] initWithFrame:numberRect]; // Page numbers view
 		
 		pageNumberView.autoresizesSubviews = NO;
@@ -183,11 +184,13 @@
 		pageNumberLabel.adjustsFontSizeToFitWidth = YES;
 		pageNumberLabel.minimumScaleFactor = 0.75f;
 		
-		
 		[pageNumberView addSubview:pageNumberLabel]; // Add label view
 
 		[self addSubview:pageNumberView]; // Add page numbers display view
 
+		
+		
+		
 		trackControl = [[ReaderTrackControl alloc] initWithFrame:self.bounds]; // Track control view
 
 		[trackControl addTarget:self action:@selector(trackViewTouchDown:) forControlEvents:UIControlEventTouchDown];

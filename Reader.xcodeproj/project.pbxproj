@@ -68,6 +68,8 @@
 		8072BCB01811809500D69542 /* ReaderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCAF1811809500D69542 /* ReaderCollectionViewController.m */; };
 		8072BCB31811837500D69542 /* ReaderContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCB21811837500D69542 /* ReaderContentCollectionViewCell.m */; };
 		8072BCB61811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCB51811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m */; };
+		80B41E171843D1AF004A9654 /* ReaderPageBarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B41E161843D1AF004A9654 /* ReaderPageBarCollectionView.m */; };
+		80B41E1A1843D311004A9654 /* ReaderPageBarContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B41E191843D311004A9654 /* ReaderPageBarContentCollectionViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -161,6 +163,10 @@
 		8072BCB21811837500D69542 /* ReaderContentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderContentCollectionViewCell.m; path = Sources/ReaderContentCollectionViewCell.m; sourceTree = "<group>"; };
 		8072BCB41811A11900D69542 /* EdgeToEdgeCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EdgeToEdgeCollectionViewLayout.h; path = Sources/EdgeToEdgeCollectionViewLayout.h; sourceTree = "<group>"; };
 		8072BCB51811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EdgeToEdgeCollectionViewLayout.m; path = Sources/EdgeToEdgeCollectionViewLayout.m; sourceTree = "<group>"; };
+		80B41E151843D1AF004A9654 /* ReaderPageBarCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderPageBarCollectionView.h; path = Sources/ReaderPageBarCollectionView.h; sourceTree = "<group>"; };
+		80B41E161843D1AF004A9654 /* ReaderPageBarCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderPageBarCollectionView.m; path = Sources/ReaderPageBarCollectionView.m; sourceTree = "<group>"; };
+		80B41E181843D311004A9654 /* ReaderPageBarContentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderPageBarContentCollectionViewCell.h; path = Sources/ReaderPageBarContentCollectionViewCell.h; sourceTree = "<group>"; };
+		80B41E191843D311004A9654 /* ReaderPageBarContentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderPageBarContentCollectionViewCell.m; path = Sources/ReaderPageBarContentCollectionViewCell.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Reader-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Reader-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -336,6 +342,10 @@
 				8072BCB21811837500D69542 /* ReaderContentCollectionViewCell.m */,
 				8072BCB41811A11900D69542 /* EdgeToEdgeCollectionViewLayout.h */,
 				8072BCB51811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m */,
+				80B41E151843D1AF004A9654 /* ReaderPageBarCollectionView.h */,
+				80B41E161843D1AF004A9654 /* ReaderPageBarCollectionView.m */,
+				80B41E181843D311004A9654 /* ReaderPageBarContentCollectionViewCell.h */,
+				80B41E191843D311004A9654 /* ReaderPageBarContentCollectionViewCell.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -461,6 +471,7 @@
 				8072BCB61811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m in Sources */,
 				45AB72EC141FC0A2003524C3 /* ReaderDemoController.m in Sources */,
 				45AB7313141FC0B1003524C3 /* CGPDFDocument.m in Sources */,
+				80B41E1A1843D311004A9654 /* ReaderPageBarContentCollectionViewCell.m in Sources */,
 				45AB7314141FC0B1003524C3 /* ReaderConstants.m in Sources */,
 				45AB7315141FC0B1003524C3 /* ReaderContentPage.m in Sources */,
 				8072BCB01811809500D69542 /* ReaderCollectionViewController.m in Sources */,
@@ -476,6 +487,7 @@
 				45AB7320141FC0B1003524C3 /* ReaderThumbRequest.m in Sources */,
 				8072BCB31811837500D69542 /* ReaderContentCollectionViewCell.m in Sources */,
 				45AB7321141FC0B1003524C3 /* ReaderThumbsView.m in Sources */,
+				80B41E171843D1AF004A9654 /* ReaderPageBarCollectionView.m in Sources */,
 				45AB7322141FC0B1003524C3 /* ReaderThumbView.m in Sources */,
 				45AB7323141FC0B1003524C3 /* ReaderViewController.m in Sources */,
 				45AB7324141FC0B1003524C3 /* ThumbsMainToolbar.m in Sources */,
