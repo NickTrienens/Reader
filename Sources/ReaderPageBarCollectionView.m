@@ -37,7 +37,7 @@
 		[self addSubview:self.backgroundView];
 		
 		UICollectionViewFlowLayout * tmpFlowLayout =  [[UICollectionViewFlowLayout alloc] init];
-		tmpFlowLayout.itemSize = CGRectInset(self.bounds, 4, 4).size;
+		tmpFlowLayout.itemSize = CGRectInset(self.bounds, 304, 4).size;
 		
 		tmpFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 		self.pdfPagesView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:tmpFlowLayout];
@@ -63,6 +63,17 @@
 
 
 #pragma mark UICollection Data source
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+	
+	CGSize tmpPageSize = [self.document getPageSize:indexPath.item+1 forHeight:80];
+	
+	return tmpPageSize;
+	
+	
+}
+
+
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
 	
 	NSInteger count = [self.document.pageCount integerValue];
