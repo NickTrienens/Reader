@@ -133,19 +133,19 @@
 	singleTapOne.numberOfTouchesRequired = 1;
 	singleTapOne.numberOfTapsRequired = 1;
 	singleTapOne.delegate = self;
-	[self.view addGestureRecognizer:singleTapOne];
+	[self.pdfPagesView addGestureRecognizer:singleTapOne];
 	
 	UITapGestureRecognizer *doubleTapOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
 	doubleTapOne.numberOfTouchesRequired = 1;
 	doubleTapOne.numberOfTapsRequired = 2;
 	doubleTapOne.delegate = self;
-	[self.view addGestureRecognizer:doubleTapOne];
+	[self.pdfPagesView addGestureRecognizer:doubleTapOne];
 	
 	UITapGestureRecognizer *doubleTapTwo = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
 	doubleTapTwo.numberOfTouchesRequired = 2;
 	doubleTapTwo.numberOfTapsRequired = 2;
 	doubleTapTwo.delegate = self;
-	[self.view addGestureRecognizer:doubleTapTwo];
+	[self.pdfPagesView addGestureRecognizer:doubleTapTwo];
 	
 	[singleTapOne requireGestureRecognizerToFail:doubleTapOne]; // Single tap requires double tap to fail
 
@@ -223,24 +223,30 @@
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
 	self.throttler ++ ;
-	if(self.throttler%17 ==0 ){
+	if(self.throttler%2 ==0  || true ){
 		[self calculateCurrentPage];
 		self.throttler = 0;
 		//NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
 	}
 }
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+	[self calculateCurrentPage];
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
 	
 	
 	//NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
 	
-	ReaderContentCollectionViewCell *targetView = (ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0];
-	self.currentPage = targetView.pageNumber;
-	self.document.pageNumber = @(targetView.pageNumber);
-
-	[mainPagebar updatePagebar]; // Update the pagebar display
-
-	self.throttler = 10;
+//	ReaderContentCollectionViewCell *targetView = (ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0];
+//	self.currentPage = targetView.pageNumber;
+//	self.document.pageNumber = @(targetView.pageNumber);
+//	NSLog(@"New page centered: %d", targetView.pageNumber );
+//	[mainPagebar updatePagebar]; // Update the pagebar display
+	
+	self.throttler = 0;
+	[self calculateCurrentPage];
 	
 }
 
@@ -249,30 +255,34 @@
 	ReaderContentCollectionViewCell *targetView = nil;
 	CGRect tmpViewFrame	= self.pdfPagesView.frame;
 	for (ReaderContentCollectionViewCell * tmpView in [self.pdfPagesView visibleCells]) {
+		if(targetView == nil){
+			targetView = tmpView;
+		}
 		CGRect tmpFrame = [self.view convertRect:tmpView.frame fromView:self.pdfPagesView];
-		//NSLog(@"%f < %f", CGRectGetMinX(tmpFrame), CGRectGetMinX(tmpViewFrame));
-		if( CGRectGetMinX(tmpFrame) < CGRectGetMinX(tmpViewFrame)){
-			//NSLog(@"%f > %f", CGRectGetMaxX(tmpFrame), CGRectGetMidX(tmpViewFrame));
-			
-			if(CGRectGetMaxX(tmpFrame) > CGRectGetMidX(tmpViewFrame)){
+		NSLog(@"%f < %f", CGRectGetMidX(tmpFrame), CGRectGetMaxX(tmpViewFrame));
+		if( CGRectGetMidX(tmpFrame) < CGRectGetMaxX(tmpViewFrame) && CGRectGetMidX(tmpFrame) > CGRectGetMinX(self.view.frame)){
+//			NSLog(@"%f > %f", CGRectGetMidX(tmpFrame), CGRectGetMidX(tmpViewFrame));
+			NSLog(@"CHoosen");
+//			if(CGRectGetMidX(tmpFrame) > CGRectGetMidX(tmpViewFrame)){
 				targetView = tmpView;
 				break;
-			}
+//			}
 		}
 		
-		//NSLog(@"%f > %f", CGRectGetMinX(tmpFrame), CGRectGetMinX(tmpViewFrame));
-		if( CGRectGetMinX(tmpFrame) > CGRectGetMinX(self.view.frame)){
-			
-			//NSLog(@"%f > %f", CGRectGetMinX(tmpFrame), CGRectGetMidX(tmpViewFrame));
-			if(CGRectGetMinX(tmpFrame) > CGRectGetMidX(self.view.frame)){
-				targetView = tmpView;
-				break;
-			}
-		}
-		
+//		NSLog(@"%f > %f", CGRectGetMidX(tmpFrame), CGRectGetMinX(tmpViewFrame));
+//		if(  ){
+//			NSLog(@"CHoosen");
+//			NSLog(@"%f > %f", CGRectGetMinX(tmpFrame), CGRectGetMidX(tmpViewFrame));
+//			if(CGRectGetMidX(tmpFrame) > CGRectGetMidX(self.view.frame)){
+//				targetView = tmpView;
+//				break;
+//			}
+//		}
 	}
+	
+	
 	if(targetView != nil && targetView.pageNumber != self.currentPage){
-		NSLog(@"%d", targetView.pageNumber);
+		NSLog(@" new centered page: %d", targetView.pageNumber);
 		self.currentPage = targetView.pageNumber;
 		self.document.pageNumber = @(targetView.pageNumber);
 		

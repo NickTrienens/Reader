@@ -17,7 +17,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		[self setBackgroundColor:[UIColor greenColor]];
     }
     return self;
 }

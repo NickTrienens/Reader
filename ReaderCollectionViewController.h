@@ -21,7 +21,7 @@
 #import "ReaderThumbQueue.h"
 
 #import "ReaderContentCollectionViewCell.h"
-
+#import "ReaderPageBarCollectionView.h"
 
 @class ReaderCollectionViewController;
 
@@ -40,7 +40,7 @@
 	
 	ReaderMainToolbar *mainToolbar;
 	
-	ReaderMainPagebar *mainPagebar;
+	ReaderPageBarCollectionView *mainPagebar;
 	
 
 }

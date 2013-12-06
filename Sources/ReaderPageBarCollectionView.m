@@ -33,7 +33,7 @@
 		
 		self.backgroundView = [[UINavigationBar alloc] initWithFrame:self.bounds];
 		[self.backgroundView setTranslucent:YES];
-		self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+		self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self addSubview:self.backgroundView];
 		
 		UICollectionViewFlowLayout * tmpFlowLayout =  [[UICollectionViewFlowLayout alloc] init];
@@ -106,8 +106,7 @@
 - (void)updatePagebarViews
 {
 	NSInteger page = [self.document.pageNumber integerValue]; // #
-	[self.pdfPagesView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:page-1 inSection:0]];
-
+	[self.pdfPagesView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 }
 
 #pragma mark Public Methods
