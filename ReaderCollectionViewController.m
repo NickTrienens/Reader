@@ -236,15 +236,6 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
 	
-	
-	//NSLog(@"visibleCells :%d", [[self.pdfPagesView visibleCells] count]);
-	
-//	ReaderContentCollectionViewCell *targetView = (ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0];
-//	self.currentPage = targetView.pageNumber;
-//	self.document.pageNumber = @(targetView.pageNumber);
-//	NSLog(@"New page centered: %d", targetView.pageNumber );
-//	[mainPagebar updatePagebar]; // Update the pagebar display
-	
 	self.throttler = 0;
 	[self calculateCurrentPage];
 	
@@ -261,25 +252,12 @@
 		CGRect tmpFrame = [self.view convertRect:tmpView.frame fromView:self.pdfPagesView];
 		NSLog(@"%f < %f", CGRectGetMidX(tmpFrame), CGRectGetMaxX(tmpViewFrame));
 		if( CGRectGetMidX(tmpFrame) < CGRectGetMaxX(tmpViewFrame) && CGRectGetMidX(tmpFrame) > CGRectGetMinX(self.view.frame)){
-//			NSLog(@"%f > %f", CGRectGetMidX(tmpFrame), CGRectGetMidX(tmpViewFrame));
 			NSLog(@"CHoosen");
-//			if(CGRectGetMidX(tmpFrame) > CGRectGetMidX(tmpViewFrame)){
-				targetView = tmpView;
-				break;
-//			}
+			targetView = tmpView;
+			break;
+
 		}
-		
-//		NSLog(@"%f > %f", CGRectGetMidX(tmpFrame), CGRectGetMinX(tmpViewFrame));
-//		if(  ){
-//			NSLog(@"CHoosen");
-//			NSLog(@"%f > %f", CGRectGetMinX(tmpFrame), CGRectGetMidX(tmpViewFrame));
-//			if(CGRectGetMidX(tmpFrame) > CGRectGetMidX(self.view.frame)){
-//				targetView = tmpView;
-//				break;
-//			}
-//		}
 	}
-	
 	
 	if(targetView != nil && targetView.pageNumber != self.currentPage){
 		NSLog(@" new centered page: %d", targetView.pageNumber);
@@ -291,8 +269,6 @@
 	}
 
 }
-
-
 
 
 #pragma mark UICollection Data source
