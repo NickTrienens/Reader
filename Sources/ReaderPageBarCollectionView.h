@@ -9,15 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "ReaderThumbCache.h"
 #import "ReaderDocument.h"
-
+#import "ReaderMainPagebar.h"
 
 @class ReaderPageBarCollectionView;
 
-@protocol ReaderMainPagebarDelegate <NSObject>
+@protocol ReaderMainPagebarCollectionDelegate <ReaderMainPagebarDelegate>
 
 @required // Delegate protocols
 
-- (void)pagebar:(ReaderPageBarCollectionView *)pagebar gotoPage:(NSInteger)page;
+//- (void)pagebar:(ReaderPageBarCollectionView *)pagebar gotoPage:(NSInteger)page;
 
 @end
 

@@ -94,12 +94,10 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-	
 	if(self.delegate){
 		[self.delegate pagebar:self gotoPage:indexPath.item+1];
 		
 	}
-	
 }
 
 
@@ -123,6 +121,9 @@
 {
 	if (self.hidden == NO) // Only if visible
 	{
+		
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+		
 		[UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction animations:^(void){
 			 self.alpha = 0.0f;
 		 } completion:^(BOOL finished){
@@ -136,7 +137,7 @@
 	if (self.hidden == YES) // Only if hidden
 	{
 		[self updatePagebarViews]; // Update views first
-		
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 		[UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction animations:^(void){
 			 self.hidden = NO;
 			 self.alpha = 1.0f;

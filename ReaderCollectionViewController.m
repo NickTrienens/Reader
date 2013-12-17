@@ -76,9 +76,9 @@
 	{
 		if ([self prefersStatusBarHidden] == NO) // Visible status bar
 		{
-			viewRect.origin.y += STATUS_HEIGHT;
-			viewRect.size.height -= STATUS_HEIGHT;
-
+			//viewRect.origin.y += STATUS_HEIGHT;
+			//viewRect.size.height -= STATUS_HEIGHT;
+			//viewRect.origin.y = 0;
 		}
 	}
 	
@@ -103,17 +103,15 @@
 	[self.view addSubview: self.pdfPagesView];
 	
 	viewRect = self.view.bounds; // View controller's view bounds\
-	if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
-	{
-		if ([self prefersStatusBarHidden] == NO) // Visible status bar
-		{
-			viewRect.origin.y += STATUS_HEIGHT;
-			
-		}
-	}
+	
 	
 	CGRect toolbarRect = viewRect;
 	toolbarRect.size.height = TOOLBAR_HEIGHT;
+	if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+	{
+		toolbarRect.size.height += STATUS_HEIGHT;
+	}
+
 	
 	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:toolbarRect document:self.document]; // At top
 	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
