@@ -198,6 +198,7 @@
 {
 	if (self.hidden == NO)
 	{
+	
 		[UIView animateWithDuration:0.25 delay:0.0
 			options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
 			animations:^(void)
@@ -217,7 +218,7 @@
 	if (self.hidden == YES)
 	{
 		[self updateBookmarkImage]; // First
-
+		
 		[UIView animateWithDuration:0.25 delay:0.0
 			options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
 			animations:^(void)

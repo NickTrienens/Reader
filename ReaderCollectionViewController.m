@@ -78,7 +78,6 @@
 		{
 			//viewRect.origin.y += STATUS_HEIGHT;
 			//viewRect.size.height -= STATUS_HEIGHT;
-			//viewRect.origin.y = 0;
 		}
 	}
 	
@@ -388,9 +387,15 @@
 					{
 						[mainToolbar showToolbar];
 						[mainPagebar showPagebar]; // Show
+						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+							[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+						}
 					}else{
 						[mainToolbar hideToolbar];
 						[mainPagebar hidePagebar]; // Hide
+						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+							[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+						}
 
 					}
 				
