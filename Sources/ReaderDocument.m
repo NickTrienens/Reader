@@ -361,10 +361,13 @@
 			if (target_h % 2)
 				target_h--; // Even
 			
+			CGPDFDocumentRelease(thePDFDocRef);
 			return CGSizeMake(target_w, target_h);
 			
 		}
+		CGPDFDocumentRelease(thePDFDocRef);
 	}
+
 	return CGSizeMake(inHeight, inHeight);
 }
 

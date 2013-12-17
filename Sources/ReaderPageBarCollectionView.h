@@ -15,14 +15,11 @@
 
 @protocol ReaderMainPagebarCollectionDelegate <ReaderMainPagebarDelegate>
 
-@required // Delegate protocols
-
-//- (void)pagebar:(ReaderPageBarCollectionView *)pagebar gotoPage:(NSInteger)page;
-
+@required
 @end
 
 
-@interface ReaderPageBarCollectionView : UIView<UICollectionViewDataSource, UIScrollViewDelegate, UICollectionViewDelegate>
+@interface ReaderPageBarCollectionView : UIView<UICollectionViewDataSource, UIScrollViewDelegate, UICollectionViewDelegate, ReaderPagebarControls>
 
 @property(strong) UICollectionView * pdfPagesView;
 @property(strong) ReaderDocument *document;
@@ -38,9 +35,6 @@
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;
 
-- (void)updatePagebar;
 
-- (void)hidePagebar;
-- (void)showPagebar;
 
 @end

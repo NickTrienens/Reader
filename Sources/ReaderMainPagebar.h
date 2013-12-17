@@ -32,15 +32,27 @@
 @class ReaderPagebarThumb;
 @class ReaderDocument;
 
+
+@protocol ReaderPagebarControls <NSObject>
+
+@required // Delegate protocols
+- (void)hidePagebar;
+- (void)showPagebar;
+
+- (void)updatePagebar;
+
+@end
+
+
 @protocol ReaderMainPagebarDelegate <NSObject>
 
 @required // Delegate protocols
 
-- (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page;
+- (void)pagebar:(UIView<ReaderPagebarControls> *)pagebar gotoPage:(NSInteger)page;
 
 @end
 
-@interface ReaderMainPagebar : UINavigationBar
+@interface ReaderMainPagebar : UINavigationBar<ReaderPagebarControls>
 
 @property (nonatomic, weak, readwrite) id <ReaderMainPagebarDelegate> delegate;
 
