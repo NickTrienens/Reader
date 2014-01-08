@@ -247,9 +247,7 @@
 			targetView = tmpView;
 		}
 		CGRect tmpFrame = [self.view convertRect:tmpView.frame fromView:self.pdfPagesView];
-		NSLog(@"%f < %f", CGRectGetMidX(tmpFrame), CGRectGetMaxX(tmpViewFrame));
 		if( CGRectGetMidX(tmpFrame) < CGRectGetMaxX(tmpViewFrame) && CGRectGetMidX(tmpFrame) > CGRectGetMinX(self.view.frame)){
-			NSLog(@"CHoosen");
 			targetView = tmpView;
 			break;
 
@@ -257,7 +255,6 @@
 	}
 	
 	if(targetView != nil && targetView.pageNumber != self.currentPage){
-		NSLog(@" new centered page: %d", targetView.pageNumber);
 		self.currentPage = targetView.pageNumber;
 		self.document.pageNumber = @(targetView.pageNumber);
 		
