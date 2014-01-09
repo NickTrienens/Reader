@@ -55,5 +55,6 @@
 
 
 -(void)showDocumentPage:(NSInteger)page;
-
+- (void)decrementPageNumber;
+- (void)incrementPageNumber;
 @end

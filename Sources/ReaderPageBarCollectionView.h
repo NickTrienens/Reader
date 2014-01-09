@@ -35,7 +35,4 @@
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;
 
-- (void)decrementPageNumber;
-- (void)incrementPageNumber;
-
 @end
