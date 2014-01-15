@@ -111,20 +111,13 @@
 		toolbarRect.size.height += STATUS_HEIGHT;
 	}
 
-	
-	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:toolbarRect document:self.document]; // At top
-	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	mainToolbar.delegate = self;
-	[self.view addSubview:mainToolbar];
-	
+	[self makeToolBarWithFrame:toolbarRect];
+		
 	CGRect pagebarRect = viewRect;
 	pagebarRect.size.height = 90;
 	pagebarRect.origin.y = (viewRect.size.height - pagebarRect.size.height);
 	
-	mainPagebar = [[ReaderPageBarCollectionView alloc] initWithFrame:pagebarRect document:self.document]; // At bottom
-	mainPagebar.delegate = self;
-	[self.view addSubview:mainPagebar];
-	
+	[self makePageBarWithFrame:pagebarRect];
 	
 	UITapGestureRecognizer *singleTapOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 	singleTapOne.numberOfTouchesRequired = 1;
@@ -148,6 +141,24 @@
 
 
 }
+
+-(void)makeToolBarWithFrame:(CGRect)inFrame{
+	
+	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:inFrame document:self.document]; // At top
+	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	mainToolbar.delegate = self;
+	[self.view addSubview:mainToolbar];
+
+}
+
+-(void)makePageBarWithFrame:(CGRect)inFrame{
+	
+	mainPagebar = [[ReaderPageBarCollectionView alloc] initWithFrame:inFrame document:self.document]; // At bottom
+	mainPagebar.delegate = self;
+	[self.view addSubview:mainPagebar];
+
+}
+
 
 - (NSUInteger)supportedInterfaceOrientations
 {
