@@ -350,7 +350,7 @@
 {
 	CGRect iconRect = bookMark.frame; iconRect.origin.y = (-2.0f);
 
-	iconRect.origin.x = (imageView.bounds.size.width - bookMark.image.size.width - 8.0f);
+	iconRect.origin.x = (self.imageView.bounds.size.width - bookMark.image.size.width - 8.0f);
 
 	return iconRect; // Frame position rect inside of image view
 }
@@ -359,7 +359,7 @@
 {
 	if ((self = [super initWithFrame:frame]))
 	{
-		imageView.contentMode = UIViewContentModeCenter;
+		self.imageView.contentMode = UIViewContentModeCenter;
 
 		defaultRect = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
 
@@ -371,7 +371,7 @@
 
 		defaultRect.size.width = newWidth; defaultRect.origin.x += offsetX;
 
-		imageView.frame = defaultRect; // Update the image view frame
+		self.imageView.frame = defaultRect; // Update the image view frame
 
 		CGFloat fontSize = (([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 19.0f : 16.0f);
 
@@ -386,7 +386,7 @@
 		textLabel.textColor = [UIColor colorWithWhite:0.24f alpha:1.0f];
 		textLabel.backgroundColor = [UIColor whiteColor];
 
-		[self insertSubview:textLabel belowSubview:imageView];
+		[self insertSubview:textLabel belowSubview:self.imageView];
 
 		backView = [[UIView alloc] initWithFrame:defaultRect];
 
@@ -406,7 +406,7 @@
 
 		[self insertSubview:backView belowSubview:textLabel];
 
-		tintView = [[UIView alloc] initWithFrame:imageView.bounds];
+		tintView = [[UIView alloc] initWithFrame:self.imageView.bounds];
 
 		tintView.hidden = YES;
 		tintView.autoresizesSubviews = NO;
@@ -415,7 +415,7 @@
 		tintView.autoresizingMask = UIViewAutoresizingNone;
 		tintView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
 
-		[imageView addSubview:tintView];
+		[self.imageView addSubview:tintView];
 
 		UIImage *image = [UIImage imageNamed:@"Reader-Mark-Y"];
 
@@ -428,7 +428,7 @@
 		bookMark.autoresizingMask = UIViewAutoresizingNone;
 		bookMark.frame = [self markRectInImageView];
 
-		[imageView addSubview:bookMark];
+		[self.imageView addSubview:bookMark];
 	}
 
 	return self;
@@ -446,15 +446,21 @@
 
 	CGPoint location = CGPointMake(x, y); // Center point
 
-	CGRect viewRect = CGRectZero; viewRect.size = image.size;
+	CGRect viewRect = CGRectZero;
+	viewRect.size = image.size;
 
-	textLabel.bounds = viewRect; textLabel.center = location; // Position
+	textLabel.bounds = viewRect;
+	textLabel.center = location; // Position
 
-	imageView.bounds = viewRect; imageView.center = location; imageView.image = image;
+	self.imageView.bounds = viewRect;
+	self.imageView.center = location;
+	self.imageView.image = image;
 
 	bookMark.frame = [self markRectInImageView]; // Position bookmark image
 
-	tintView.frame = imageView.bounds; backView.bounds = viewRect; backView.center = location;
+	tintView.frame = self.imageView.bounds;
+	backView.bounds = viewRect;
+	backView.center = location;
 
 #if (READER_SHOW_SHADOWS == TRUE) // Option
 
@@ -467,13 +473,16 @@
 {
 	[super reuse]; // Reuse thumb view
 
-	textLabel.text = nil; textLabel.frame = defaultRect;
+	textLabel.text = nil;
+	textLabel.frame = defaultRect;
 
-	imageView.image = nil; imageView.frame = defaultRect;
+	self.imageView.image = nil;
+	self.imageView.frame = defaultRect;
 
 	bookMark.hidden = YES; bookMark.frame = [self markRectInImageView];
 
-	tintView.hidden = YES; tintView.frame = imageView.bounds; backView.frame = defaultRect;
+	tintView.hidden = YES; tintView.frame = self.imageView.bounds;
+	backView.frame = defaultRect;
 
 #if (READER_SHOW_SHADOWS == TRUE) // Option
 

@@ -563,11 +563,10 @@
 
 		UIColor *background = [UIColor colorWithWhite:0.8f alpha:value];
 
-		self.backgroundColor = background; imageView.backgroundColor = background;
-
-		imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
-
-		imageView.layer.borderWidth = 1.0f; // Give the thumb image view a border
+		self.backgroundColor = background;
+		self.imageView.backgroundColor = background;
+		self.imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
+		self.imageView.layer.borderWidth = 1.0f; // Give the thumb image view a border
 	}
 
 	return self;

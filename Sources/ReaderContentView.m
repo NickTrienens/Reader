@@ -317,9 +317,9 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 {
 	if ((self = [super initWithFrame:frame])) // Superclass init
 	{
-		imageView.contentMode = UIViewContentModeScaleAspectFill;
+		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
 
-		imageView.clipsToBounds = YES; // Needed for aspect fill
+		self.imageView.clipsToBounds = YES; // Needed for aspect fill
 	}
 
 	return self;
