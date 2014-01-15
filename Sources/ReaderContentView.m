@@ -224,6 +224,8 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)zoomIncrement
 {
+	
+	if(self.scrollEnabled == YES){
 	CGFloat zoomScale = self.zoomScale;
 
 	if (zoomScale < self.maximumZoomScale)
@@ -237,10 +239,13 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 		[self setZoomScale:zoomScale animated:YES];
 	}
+	}
 }
 
 - (void)zoomDecrement
 {
+	if(self.scrollEnabled == YES){
+
 	CGFloat zoomScale = self.zoomScale;
 
 	if (zoomScale > self.minimumZoomScale)
@@ -253,6 +258,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 		}
 
 		[self setZoomScale:zoomScale animated:YES];
+	}
 	}
 }
 
