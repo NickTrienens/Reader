@@ -44,6 +44,9 @@
 	
 
 }
+@property(assign) BOOL allowTogglingStatusBarHidden;
+
+
 
 @property(assign) NSInteger currentPage;
 @property(assign) NSInteger throttler;

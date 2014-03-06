@@ -20,6 +20,7 @@
 
 @property(strong) NSString * contentClassName;
 
+@property(assign) BOOL allowZooiming;
 -(void)configureWithDocument:(ReaderDocument *)inDocument page:(NSInteger)inPageNumber;
 
 @end

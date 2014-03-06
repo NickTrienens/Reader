@@ -24,9 +24,10 @@
 
 -(void)createContentView{
 
-	self.pdfView = [[NSClassFromString(self.contentClassName) alloc] initWithFrame:self.contentView.bounds fileURL:self.document.fileURL page:self.pageNumber password:self.document.password];
-
-	[self.contentView addSubview:self.pdfView];
+	self.pdfView = [[NSClassFromString(self.contentClassName) alloc] initWithFrame:self.bounds fileURL:self.document.fileURL page:self.pageNumber password:self.document.password];
+	[self.pdfView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth ];
+	self.pdfView.scrollEnabled = self.allowZooiming;
+	[self addSubview:self.pdfView];
 	[self.pdfView showPageThumb:self.document.fileURL page:self.pageNumber password:self.document.password guid:self.document.guid];
 
 	//NSLog(@"pageview  created for : %d", self.pageNumber);
@@ -53,6 +54,12 @@
 	
 	[self createContentView];
 	
+#if 0
+	[self.pdfView setAlpha:1];
+	if(inPageNumber%2==0){
+		[self.pdfView setAlpha:.3];
+	}
+#endif
 	
 }
 

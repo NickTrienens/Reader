@@ -61,6 +61,16 @@
     return self;
 }
 
+-(void)dealloc{
+	
+	
+	self.pdfPagesView.delegate = nil;
+	self.pdfPagesView.dataSource = nil;
+	self.pdfPagesView = nil;
+	
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -111,13 +121,20 @@
 		toolbarRect.size.height += STATUS_HEIGHT;
 	}
 
-	[self makeToolBarWithFrame:toolbarRect];
-		
+	
+	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:toolbarRect document:self.document]; // At top
+	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	mainToolbar.delegate = self;
+	[self.view addSubview:mainToolbar];
+	
 	CGRect pagebarRect = viewRect;
 	pagebarRect.size.height = 90;
 	pagebarRect.origin.y = (viewRect.size.height - pagebarRect.size.height);
 	
-	[self makePageBarWithFrame:pagebarRect];
+	mainPagebar = [[ReaderPageBarCollectionView alloc] initWithFrame:pagebarRect document:self.document]; // At bottom
+	mainPagebar.delegate = self;
+	[self.view addSubview:mainPagebar];
+	
 	
 	UITapGestureRecognizer *singleTapOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 	singleTapOne.numberOfTouchesRequired = 1;
@@ -141,24 +158,6 @@
 
 
 }
-
--(void)makeToolBarWithFrame:(CGRect)inFrame{
-	
-	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:inFrame document:self.document]; // At top
-	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	mainToolbar.delegate = self;
-	[self.view addSubview:mainToolbar];
-
-}
-
--(void)makePageBarWithFrame:(CGRect)inFrame{
-	
-	mainPagebar = [[ReaderPageBarCollectionView alloc] initWithFrame:inFrame document:self.document]; // At bottom
-	mainPagebar.delegate = self;
-	[self.view addSubview:mainPagebar];
-
-}
-
 
 - (NSUInteger)supportedInterfaceOrientations
 {
@@ -390,45 +389,48 @@
 			}
 			else // Nothing active tapped in the target content view
 			{
-			
+				if(mainToolbar != nil || mainPagebar != nil){
 					if ((mainToolbar.hidden == YES) || (mainPagebar.hidden == YES))
 					{
 						[mainToolbar showToolbar];
 						[mainPagebar showPagebar]; // Show
-						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+						if (self.allowTogglingStatusBarHidden) {
 							[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 						}
 					}else{
 						[mainToolbar hideToolbar];
 						[mainPagebar hidePagebar]; // Hide
-						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+						if (self.allowTogglingStatusBarHidden) {
 							[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 						}
 
 					}
+				}
 				
 			}
 			
 			return;
 		}
 		
-		CGRect nextPageRect = viewRect;
-		nextPageRect.size.width = TAP_AREA_SIZE;
-		nextPageRect.origin.x = (viewRect.size.width - TAP_AREA_SIZE);
-		
-		if (CGRectContainsPoint(nextPageRect, point)) // page++ area
-		{
-			[self incrementPageNumber];
-			return;
-		}
-		
-		CGRect prevPageRect = viewRect;
-		prevPageRect.size.width = TAP_AREA_SIZE;
-		
-		if (CGRectContainsPoint(prevPageRect, point)) // page-- area
-		{
-			[self decrementPageNumber];
-			return;
+		if(self.pdfPagesView.pagingEnabled){
+			CGRect nextPageRect = viewRect;
+			nextPageRect.size.width = TAP_AREA_SIZE;
+			nextPageRect.origin.x = (viewRect.size.width - TAP_AREA_SIZE);
+			
+			if (CGRectContainsPoint(nextPageRect, point)) // page++ area
+			{
+				[self incrementPageNumber];
+				return;
+			}
+			
+			CGRect prevPageRect = viewRect;
+			prevPageRect.size.width = TAP_AREA_SIZE;
+			
+			if (CGRectContainsPoint(prevPageRect, point)) // page-- area
+			{
+				[self decrementPageNumber];
+				return;
+			}
 		}
 	}
 }
@@ -446,42 +448,45 @@
 		if (CGRectContainsPoint(zoomArea, point)) // Double tap is in the zoom area
 		{
 			ReaderContentView *targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
-			
-			switch (recognizer.numberOfTouchesRequired) // Touches count
-			{
-				case 1: // One finger double tap: zoom ++
+			if([targetView isScrollEnabled]){
+				switch (recognizer.numberOfTouchesRequired) // Touches count
 				{
-					[targetView zoomIncrement];
-					break;
-				}
-					
-				case 2: // Two finger double tap: zoom --
-				{
-					[targetView zoomDecrement];
-					break;
+					case 1: // One finger double tap: zoom ++
+					{
+						[targetView zoomIncrement];
+						break;
+					}
+						
+					case 2: // Two finger double tap: zoom --
+					{
+						[targetView zoomDecrement];
+						break;
+					}
 				}
 			}
 			
 			return;
 		}
 		
-		CGRect nextPageRect = viewRect;
-		nextPageRect.size.width = TAP_AREA_SIZE;
-		nextPageRect.origin.x = (viewRect.size.width - TAP_AREA_SIZE);
-		
-		if (CGRectContainsPoint(nextPageRect, point)) // page++ area
-		{
-			[self incrementPageNumber];
-			return;
-		}
-		
-		CGRect prevPageRect = viewRect;
-		prevPageRect.size.width = TAP_AREA_SIZE;
-		
-		if (CGRectContainsPoint(prevPageRect, point)) // page-- area
-		{
-			[self decrementPageNumber];
-			return;
+		if(self.pdfPagesView.pagingEnabled){
+			CGRect nextPageRect = viewRect;
+			nextPageRect.size.width = TAP_AREA_SIZE;
+			nextPageRect.origin.x = (viewRect.size.width - TAP_AREA_SIZE);
+			
+			if (CGRectContainsPoint(nextPageRect, point)) // page++ area
+			{
+				[self incrementPageNumber];
+				return;
+			}
+			
+			CGRect prevPageRect = viewRect;
+			prevPageRect.size.width = TAP_AREA_SIZE;
+			
+			if (CGRectContainsPoint(prevPageRect, point)) // page-- area
+			{
+				[self decrementPageNumber];
+				return;
+			}
 		}
 	}
 }

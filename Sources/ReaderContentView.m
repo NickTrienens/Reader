@@ -40,7 +40,7 @@
 #if (READER_SHOW_SHADOWS == TRUE) // Option
 	#define CONTENT_INSET 4.0f
 #else
-	#define CONTENT_INSET 2.0f
+	#define CONTENT_INSET 0.0f
 #endif // end of READER_SHOW_SHADOWS Option
 
 #define PAGE_THUMB_LARGE 240
@@ -224,8 +224,6 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)zoomIncrement
 {
-	
-	if(self.scrollEnabled == YES){
 	CGFloat zoomScale = self.zoomScale;
 
 	if (zoomScale < self.maximumZoomScale)
@@ -239,13 +237,10 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 		[self setZoomScale:zoomScale animated:YES];
 	}
-	}
 }
 
 - (void)zoomDecrement
 {
-	if(self.scrollEnabled == YES){
-
 	CGFloat zoomScale = self.zoomScale;
 
 	if (zoomScale > self.minimumZoomScale)
@@ -258,7 +253,6 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 		}
 
 		[self setZoomScale:zoomScale animated:YES];
-	}
 	}
 }
 
@@ -317,9 +311,9 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 {
 	if ((self = [super initWithFrame:frame])) // Superclass init
 	{
-		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+		imageView.contentMode = UIViewContentModeScaleAspectFill;
 
-		self.imageView.clipsToBounds = YES; // Needed for aspect fill
+		imageView.clipsToBounds = YES; // Needed for aspect fill
 	}
 
 	return self;
