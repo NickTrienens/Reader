@@ -21,7 +21,7 @@
 @property(strong) NSString * contentClassName;
 
 
-@property(assign) BOOL allowZooiming;
+@property(assign) BOOL allowZooming;
 -(void)configureWithDocument:(ReaderDocument *)inDocument page:(NSInteger)inPageNumber;
 
 @end

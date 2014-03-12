@@ -28,8 +28,8 @@
 
 	self.pdfView = [[NSClassFromString(self.contentClassName) alloc] initWithFrame:self.bounds fileURL:self.document.fileURL page:self.pageNumber password:self.document.password];
 	[self.pdfView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth ];
-	self.pdfView.scrollEnabled = self.allowZooiming;
-	self.pdfView.allowZooming = self.allowZooiming;
+	self.pdfView.scrollEnabled = self.allowZooming;
+	self.pdfView.allowZooming = self.allowZooming;
 	[self addSubview:self.pdfView];
 	[self.pdfView showPageThumb:self.document.fileURL page:self.pageNumber password:self.document.password guid:self.document.guid];
 
