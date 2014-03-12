@@ -17,6 +17,8 @@
         // Initialization code
 		self.contentClassName = @"ReaderContentView";
 		self.contentView.backgroundColor = [UIColor clearColor];
+		
+
     }
     return self;
 }
@@ -27,11 +29,13 @@
 	self.pdfView = [[NSClassFromString(self.contentClassName) alloc] initWithFrame:self.bounds fileURL:self.document.fileURL page:self.pageNumber password:self.document.password];
 	[self.pdfView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth ];
 	self.pdfView.scrollEnabled = self.allowZooiming;
+	self.pdfView.allowZooming = self.allowZooiming;
 	[self addSubview:self.pdfView];
 	[self.pdfView showPageThumb:self.document.fileURL page:self.pageNumber password:self.document.password guid:self.document.guid];
 
 	//NSLog(@"pageview  created for : %d", self.pageNumber);
-		
+	
+	
 }
 
 -(void)prepareForReuse{

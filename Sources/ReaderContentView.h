@@ -50,6 +50,7 @@
 	CGFloat zoomAmount;
 }
 
+@property(assign) BOOL allowZooming;
 @property (nonatomic, weak, readwrite) id <ReaderContentViewDelegate> message;
 
 - (id)initWithFrame:(CGRect)frame fileURL:(NSURL *)fileURL page:(NSUInteger)page password:(NSString *)phrase;
@@ -61,6 +62,7 @@
 - (void)zoomIncrement;
 - (void)zoomDecrement;
 - (void)zoomReset;
+- (void)updateMinimumMaximumZoom;
 
 @end
 

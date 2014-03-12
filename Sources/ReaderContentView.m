@@ -67,10 +67,17 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)updateMinimumMaximumZoom
 {
+	
 	CGRect targetRect = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
 
 	CGFloat zoomScale = ZoomScaleThatFits(targetRect.size, theContentView.bounds.size);
-
+	if (self.allowZooming == NO) {
+		self.minimumZoomScale = zoomScale;
+		self.maximumZoomScale = zoomScale;
+		zoomAmount = 0;
+		return;
+	}
+	
 	self.minimumZoomScale = zoomScale; // Set the minimum and maximum zoom scales
 
 	self.maximumZoomScale = (zoomScale * ZOOM_LEVELS); // Max number of zoom levels
@@ -92,6 +99,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 		self.userInteractionEnabled = YES;
 		self.autoresizesSubviews = NO;
 		self.bouncesZoom = YES;
+		self.allowZooming = YES;
 		self.delegate = self;
 
 		theContentView = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
@@ -275,6 +283,8 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	if(self.allowZooming == NO)
+		return;
 	[super touchesBegan:touches withEvent:event]; // Message superclass
 
 	[message contentView:self touchesBegan:touches]; // Message delegate
@@ -282,16 +292,22 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	if(self.allowZooming == NO)
+		return;
 	[super touchesCancelled:touches withEvent:event]; // Message superclass
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	if(self.allowZooming == NO)
+		return;
 	[super touchesEnded:touches withEvent:event]; // Message superclass
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+	if(self.allowZooming == NO)
+		return;
 	[super touchesMoved:touches withEvent:event]; // Message superclass
 }
 
