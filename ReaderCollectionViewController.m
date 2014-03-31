@@ -135,12 +135,13 @@
 	mainPagebar.delegate = self;
 	[self.view addSubview:mainPagebar];
 	
-	
+
 	UITapGestureRecognizer *singleTapOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 	singleTapOne.numberOfTouchesRequired = 1;
 	singleTapOne.numberOfTapsRequired = 1;
 	singleTapOne.delegate = self;
 	[self.pdfPagesView addGestureRecognizer:singleTapOne];
+
 	
 	UITapGestureRecognizer *doubleTapOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
 	doubleTapOne.numberOfTouchesRequired = 1;
@@ -342,14 +343,20 @@
 		
 		if (CGRectContainsPoint(areaRect, point)) // Single tap is inside the area
 		{
-//			NSInteger page = [document.pageNumber integerValue]; // Current page #
-//			
-//			NSNumber *key = [NSNumber numberWithInteger:page]; // Page number key
-//			
-//			ReaderContentView *targetView = [contentViews objectForKey:key];
-			ReaderContentView *targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
 
+			ReaderContentView *targetView = nil; //[(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
+			for (ReaderContentCollectionViewCell *  tmpCell in [self.pdfPagesView visibleCells]) {
+
+				//DLog(@"%@ == %d ", NSStringFromCGPoint([recognizer locationInView:self.pdfPagesView]) , CGRectContainsPoint( tmpCell.frame, [recognizer locationInView:self.pdfPagesView]));
+				if(CGRectContainsPoint( tmpCell.frame, [recognizer locationInView:self.pdfPagesView])){
+					targetView = [(ReaderContentCollectionViewCell*) tmpCell pdfView];
+					break;
+				}
+			}
 			
+			DLog(@"%@", NSStringFromCGPoint([recognizer locationInView:self.view]));
+			if(targetView == nil)
+				return;
 			id target = [targetView processSingleTap:recognizer]; // Target
 			
 			if (target != nil) // Handle the returned target object
