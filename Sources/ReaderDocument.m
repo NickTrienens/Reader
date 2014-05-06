@@ -269,7 +269,9 @@
 {
 	NSString *archiveFilePath = [ReaderDocument archiveFilePath:filename];
 
-	return [NSKeyedArchiver archiveRootObject:self toFile:archiveFilePath];
+	BOOL res =  [NSKeyedArchiver archiveRootObject:self toFile:archiveFilePath];
+	
+	return res;
 }
 
 - (void)saveReaderDocument

@@ -40,7 +40,7 @@
 #if (READER_SHOW_SHADOWS == TRUE) // Option
 	#define CONTENT_INSET 4.0f
 #else
-	#define CONTENT_INSET 0.0f
+	#define CONTENT_INSET 2.0f
 #endif // end of READER_SHOW_SHADOWS Option
 
 #define PAGE_THUMB_LARGE 240
@@ -67,17 +67,10 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)updateMinimumMaximumZoom
 {
-	
 	CGRect targetRect = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
 
-	CGFloat zoomScale = ZoomScaleThatFits(targetRect.size, theContentView.bounds.size);
-	if (self.allowZooming == NO) {
-		self.minimumZoomScale = zoomScale;
-		self.maximumZoomScale = zoomScale;
-		zoomAmount = 0;
-		return;
-	}
-	
+	CGFloat zoomScale = ZoomScaleThatFits(targetRect.size, self.theContentView.bounds.size);
+
 	self.minimumZoomScale = zoomScale; // Set the minimum and maximum zoom scales
 
 	self.maximumZoomScale = (zoomScale * ZOOM_LEVELS); // Max number of zoom levels
@@ -99,14 +92,13 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 		self.userInteractionEnabled = YES;
 		self.autoresizesSubviews = NO;
 		self.bouncesZoom = YES;
-		self.allowZooming = YES;
 		self.delegate = self;
 
-		theContentView = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
+		self.theContentView = [[ReaderContentPage alloc] initWithURL:fileURL page:page password:phrase];
 
-		if (theContentView != nil) // Must have a valid and initialized content view
+		if (self.theContentView != nil) // Must have a valid and initialized content view
 		{
-			theContainerView = [[UIView alloc] initWithFrame:theContentView.bounds];
+			theContainerView = [[UIView alloc] initWithFrame:self.theContentView.bounds];
 
 			theContainerView.autoresizesSubviews = NO;
 			theContainerView.userInteractionEnabled = NO;
@@ -122,19 +114,19 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 #endif // end of READER_SHOW_SHADOWS Option
 
-			self.contentSize = theContentView.bounds.size; // Content size same as view size
+			self.contentSize = self.theContentView.bounds.size; // Content size same as view size
 			self.contentOffset = CGPointMake((0.0f - CONTENT_INSET), (0.0f - CONTENT_INSET)); // Offset
 			self.contentInset = UIEdgeInsetsMake(CONTENT_INSET, CONTENT_INSET, CONTENT_INSET, CONTENT_INSET);
 
 #if (READER_ENABLE_PREVIEW == TRUE) // Option
 
-			theThumbView = [[ReaderContentThumb alloc] initWithFrame:theContentView.bounds]; // Page thumb view
+			theThumbView = [[ReaderContentThumb alloc] initWithFrame:self.theContentView.bounds]; // Page thumb view
 
 			[theContainerView addSubview:theThumbView]; // Add the thumb view to the container view
 
 #endif // end of READER_ENABLE_PREVIEW Option
 
-			[theContainerView addSubview:theContentView]; // Add the content view to the container view
+			[theContainerView addSubview:self.theContentView]; // Add the content view to the container view
 
 			[self addSubview:theContainerView]; // Add the container view to the scroll view
 
@@ -214,41 +206,46 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 	if (viewFrame.size.width < boundsSize.width)
 		viewFrame.origin.x = (((boundsSize.width - viewFrame.size.width) / 2.0f) + self.contentOffset.x);
-	else
-		viewFrame.origin.x = 0.0f;
-
-	if (viewFrame.size.height < boundsSize.height)
-		viewFrame.origin.y = (((boundsSize.height - viewFrame.size.height) / 2.0f) + self.contentOffset.y);
-	else
-		viewFrame.origin.y = 0.0f;
+	//else
+		//viewFrame.origin.x = 0.0f;
+//
+//	if (viewFrame.size.height < boundsSize.height)
+//		viewFrame.origin.y = (((boundsSize.height - viewFrame.size.height) / 2.0f) + self.contentOffset.y);
+//	else
+//		viewFrame.origin.y = 0.0f;
 
 	theContainerView.frame = viewFrame;
 }
 
 - (id)processSingleTap:(UITapGestureRecognizer *)recognizer
 {
-	return [theContentView processSingleTap:recognizer];
+	return [self.theContentView processSingleTap:recognizer];
 }
 
 - (void)zoomIncrement
 {
-	CGFloat zoomScale = self.zoomScale;
+	
+	if(self.scrollEnabled == YES){
+		CGFloat zoomScale = self.zoomScale;
 
-	if (zoomScale < self.maximumZoomScale)
-	{
-		zoomScale += zoomAmount; // += value
-
-		if (zoomScale > self.maximumZoomScale)
+		if (zoomScale < self.maximumZoomScale)
 		{
-			zoomScale = self.maximumZoomScale;
-		}
+			zoomScale += zoomAmount; // += value
 
-		[self setZoomScale:zoomScale animated:YES];
+			if (zoomScale > self.maximumZoomScale)
+			{
+				zoomScale = self.maximumZoomScale;
+			}
+
+			[self setZoomScale:zoomScale animated:YES];
+		}
 	}
 }
 
 - (void)zoomDecrement
 {
+	if(self.scrollEnabled == YES){
+
 	CGFloat zoomScale = self.zoomScale;
 
 	if (zoomScale > self.minimumZoomScale)
@@ -261,6 +258,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 		}
 
 		[self setZoomScale:zoomScale animated:YES];
+	}
 	}
 }
 
@@ -283,8 +281,6 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if(self.allowZooming == NO)
-		return;
 	[super touchesBegan:touches withEvent:event]; // Message superclass
 
 	[message contentView:self touchesBegan:touches]; // Message delegate
@@ -292,22 +288,16 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if(self.allowZooming == NO)
-		return;
 	[super touchesCancelled:touches withEvent:event]; // Message superclass
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if(self.allowZooming == NO)
-		return;
 	[super touchesEnded:touches withEvent:event]; // Message superclass
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	if(self.allowZooming == NO)
-		return;
 	[super touchesMoved:touches withEvent:event]; // Message superclass
 }
 

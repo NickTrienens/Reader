@@ -41,7 +41,7 @@
 
 @interface ReaderContentView : UIScrollView <UIScrollViewDelegate>
 {
-	ReaderContentPage *theContentView;
+//	ReaderContentPage *theContentView;
 	
 	ReaderContentThumb *theThumbView;
 	
@@ -50,6 +50,7 @@
 	CGFloat zoomAmount;
 }
 
+@property(strong) ReaderContentPage *theContentView;
 @property(assign) BOOL allowZooming;
 @property (nonatomic, weak, readwrite) id <ReaderContentViewDelegate> message;
 
@@ -62,7 +63,6 @@
 - (void)zoomIncrement;
 - (void)zoomDecrement;
 - (void)zoomReset;
-- (void)updateMinimumMaximumZoom;
 
 @end
 
