@@ -40,6 +40,7 @@
 		tmpFlowLayout.itemSize = CGRectInset(self.bounds, 304, 4).size;
 		
 		tmpFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+		tmpFlowLayout.sectionInset = UIEdgeInsetsMake(0, 8, 0, 8);
 		self.pdfPagesView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:tmpFlowLayout];
 		self.pdfPagesView.scrollsToTop = NO;
 		self.pdfPagesView.pagingEnabled = NO;
@@ -104,17 +105,22 @@
 - (void)updatePagebarViews
 {
 	NSInteger page = [self.document.pageNumber integerValue]; // #
-	[self.pdfPagesView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+	
+	NSIndexPath * tmpIndexPath = [NSIndexPath indexPathForItem:page-1 inSection:0];
+	[self.pdfPagesView selectItemAtIndexPath:tmpIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
+
+	
 }
 
 #pragma mark Public Methods
 
+
 - (void)updatePagebar
 {
-	if (self.hidden == NO) // Only if visible
-	{
+//	if (self.hidden == NO) // Only if visible
+//	{
 		[self updatePagebarViews]; // Update views
-	}
+//	}
 }
 
 - (void)hidePagebar

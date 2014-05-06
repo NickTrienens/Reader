@@ -30,6 +30,16 @@
 	
 }
 
+-(void)setSelected:(BOOL)selected{
+	if(selected){
+		self.pdfView.layer.borderColor = [UIColor grayColor].CGColor;
+		self.pdfView.layer.borderWidth = 1;
+	}else{
+		self.pdfView.layer.borderColor = [UIColor grayColor].CGColor;
+		self.pdfView.layer.borderWidth = 0;
+	}
+}
+
 -(void)createContentView{
 	
 	
@@ -64,14 +74,5 @@
 }
 
 
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end
