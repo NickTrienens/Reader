@@ -44,9 +44,6 @@
 	
 
 }
-@property(assign) BOOL allowTogglingStatusBarHidden;
-
-
 
 @property(assign) NSInteger currentPage;
 @property(assign) NSInteger throttler;
@@ -60,4 +57,5 @@
 -(void)showDocumentPage:(NSInteger)page;
 - (void)decrementPageNumber;
 - (void)incrementPageNumber;
+- (void)calculateCurrentPage;
 @end
