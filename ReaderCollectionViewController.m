@@ -260,6 +260,12 @@
 	
 }
 
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+	self.throttler = 0;
+	[self calculateCurrentPage];
+}
+
+
 -(void)calculateCurrentPage{
 	
 	ReaderContentCollectionViewCell *targetView = nil;
