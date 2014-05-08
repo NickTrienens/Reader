@@ -63,6 +63,7 @@
 - (void)zoomIncrement;
 - (void)zoomDecrement;
 - (void)zoomReset;
+- (void)updateMinimumMaximumZoom;
 
 @end
 
