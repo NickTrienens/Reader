@@ -410,13 +410,14 @@
 					{
 						[mainToolbar showToolbar];
 						[mainPagebar showPagebar]; // Show
-						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+						
+						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1 && self.adjustStatusBar) {
 							[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 						}
 					}else{
 						[mainToolbar hideToolbar];
 						[mainPagebar hidePagebar]; // Hide
-						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1 && self.adjustStatusBar) {
 							[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 						}
 

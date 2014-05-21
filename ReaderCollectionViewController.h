@@ -50,7 +50,7 @@
 @property(strong) ReaderDocument *document;
 @property (nonatomic, weak, readwrite) id <ReaderCollectionViewControllerDelegate> delegate;
 - (id)initWithReaderDocument:(ReaderDocument *)object;
-
+@property(assign) BOOL adjustStatusBar;
 @property(strong) UICollectionView * pdfPagesView;
 
 

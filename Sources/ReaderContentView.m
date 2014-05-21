@@ -40,7 +40,7 @@
 #if (READER_SHOW_SHADOWS == TRUE) // Option
 	#define CONTENT_INSET 4.0f
 #else
-	#define CONTENT_INSET 2.0f
+	#define CONTENT_INSET 0.0f
 #endif // end of READER_SHOW_SHADOWS Option
 
 #define PAGE_THUMB_LARGE 240
@@ -72,8 +72,11 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 	CGFloat zoomScale = ZoomScaleThatFits(targetRect.size, self.theContentView.bounds.size);
 
 	self.minimumZoomScale = zoomScale; // Set the minimum and maximum zoom scales
-
-	self.maximumZoomScale = (zoomScale * ZOOM_LEVELS); // Max number of zoom levels
+	if(self.allowZooming){
+		self.maximumZoomScale = (zoomScale * ZOOM_LEVELS); // Max number of zoom levels
+	}else{
+		self.maximumZoomScale = zoomScale; 
+	}
 
 	zoomAmount = ((self.maximumZoomScale - self.minimumZoomScale) / ZOOM_LEVELS);
 }
