@@ -73,7 +73,7 @@
 	
 	self.currentPage = [self.document.pageNumber integerValue];
 	
-	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+	self.view.backgroundColor = [UIColor blackColor];
 	
 	CGRect viewRect = self.view.bounds; // View controller's view bounds
 	
@@ -363,7 +363,18 @@
 		if (CGRectContainsPoint(areaRect, point)) // Single tap is inside the area
 		{
 
-			ReaderContentView *targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
+
+			ReaderContentView *targetView = nil;
+			for (ReaderContentCollectionViewCell *  tmpCell in [self.pdfPagesView visibleCells]) {
+				if(CGRectContainsPoint( tmpCell.frame, [recognizer locationInView:self.pdfPagesView])){
+					targetView = [(ReaderContentCollectionViewCell*) tmpCell pdfView];
+					break;
+				}
+			}
+			
+			DLog(@"%@", NSStringFromCGPoint([recognizer locationInView:self.view]));
+			if(targetView == nil)
+				return;
 
 			
 			id target = [targetView processSingleTap:recognizer]; // Target
@@ -428,23 +439,25 @@
 			return;
 		}
 		
-		CGRect nextPageRect = viewRect;
-		nextPageRect.size.width = TAP_AREA_SIZE;
-		nextPageRect.origin.x = (viewRect.size.width - TAP_AREA_SIZE);
-		
-		if (CGRectContainsPoint(nextPageRect, point)) // page++ area
-		{
-			[self incrementPageNumber];
-			return;
-		}
-		
-		CGRect prevPageRect = viewRect;
-		prevPageRect.size.width = TAP_AREA_SIZE;
-		
-		if (CGRectContainsPoint(prevPageRect, point)) // page-- area
-		{
-			[self decrementPageNumber];
-			return;
+		if(self.tapToTurnPage){
+			CGRect nextPageRect = viewRect;
+			nextPageRect.size.width = TAP_AREA_SIZE;
+			nextPageRect.origin.x = (viewRect.size.width - TAP_AREA_SIZE);
+			
+			if (CGRectContainsPoint(nextPageRect, point)) // page++ area
+			{
+				[self incrementPageNumber];
+				return;
+			}
+			
+			CGRect prevPageRect = viewRect;
+			prevPageRect.size.width = TAP_AREA_SIZE;
+			
+			if (CGRectContainsPoint(prevPageRect, point)) // page-- area
+			{
+				[self decrementPageNumber];
+				return;
+			}
 		}
 	}
 }
