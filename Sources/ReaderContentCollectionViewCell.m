@@ -18,6 +18,7 @@
 		self.contentClassName = @"ReaderContentView";
 		self.contentView.backgroundColor = [UIColor clearColor];
 		
+		self.allowZooming = YES;
 
     }
     return self;

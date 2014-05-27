@@ -180,8 +180,8 @@
 {
     NSLog(@"rotated: %@", NSStringFromCGRect(self.pdfPagesView.frame));
 //	[self.pdfPagesView.collectionViewLayout invalidateLayout];
-	[self.pdfPagesView reloadData];
-	[mainPagebar.pdfPagesView.collectionViewLayout invalidateLayout];
+//	[self.pdfPagesView reloadData];
+//	[mainPagebar.pdfPagesView.collectionViewLayout invalidateLayout];
 	
 
 }
