@@ -41,16 +41,14 @@
 
 @interface ReaderContentView : UIScrollView <UIScrollViewDelegate>
 {
-//	ReaderContentPage *theContentView;
-	
-	ReaderContentThumb *theThumbView;
-	
+
 	UIView *theContainerView;
 	
 	CGFloat zoomAmount;
 }
 
 @property(strong) ReaderContentPage *theContentView;
+@property(strong) ReaderContentThumb *theThumbView;
 @property(assign) BOOL allowZooming;
 @property (nonatomic, weak, readwrite) id <ReaderContentViewDelegate> message;
 

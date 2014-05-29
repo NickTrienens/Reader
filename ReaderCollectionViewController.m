@@ -73,7 +73,7 @@
 	
 	self.currentPage = [self.document.pageNumber integerValue];
 	
-	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+	self.view.backgroundColor = [UIColor blackColor];
 	
 	CGRect viewRect = self.view.bounds; // View controller's view bounds
 	

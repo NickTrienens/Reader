@@ -123,9 +123,9 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 #if (READER_ENABLE_PREVIEW == TRUE) // Option
 
-			theThumbView = [[ReaderContentThumb alloc] initWithFrame:self.theContentView.bounds]; // Page thumb view
+			self.theThumbView = [[ReaderContentThumb alloc] initWithFrame:self.theContentView.bounds]; // Page thumb view
 
-			[theContainerView addSubview:theThumbView]; // Add the thumb view to the container view
+			[theContainerView addSubview:self.theThumbView]; // Add the thumb view to the container view
 
 #endif // end of READER_ENABLE_PREVIEW Option
 
@@ -159,11 +159,12 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 	CGSize size = (large ? CGSizeMake(PAGE_THUMB_LARGE, PAGE_THUMB_LARGE) : CGSizeMake(PAGE_THUMB_SMALL, PAGE_THUMB_SMALL));
 
-	ReaderThumbRequest *request = [ReaderThumbRequest newForView:theThumbView fileURL:fileURL password:phrase guid:guid page:page size:size];
+	ReaderThumbRequest *request = [ReaderThumbRequest newForView:self.theThumbView fileURL:fileURL password:phrase guid:guid page:page size:size];
 
 	UIImage *image = [[ReaderThumbCache sharedInstance] thumbRequest:request priority:YES]; // Request the page thumb
 
-	if ([image isKindOfClass:[UIImage class]]) [theThumbView showImage:image]; // Show image from cache
+	if ([image isKindOfClass:[UIImage class]])
+		[self.theThumbView showImage:image]; // Show image from cache
 
 #endif // end of READER_ENABLE_PREVIEW Option
 }
