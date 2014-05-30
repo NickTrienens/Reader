@@ -105,8 +105,10 @@
 - (void)updatePagebarViews
 {
 	NSInteger page = [self.document.pageNumber integerValue]; // #
+	if(page > 1)
+		page--;
 	
-	NSIndexPath * tmpIndexPath = [NSIndexPath indexPathForItem:page-1 inSection:0];
+	NSIndexPath * tmpIndexPath = [NSIndexPath indexPathForItem:page inSection:0];
 	[self.pdfPagesView selectItemAtIndexPath:tmpIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
 
 	

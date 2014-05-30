@@ -32,5 +32,6 @@
 @interface ReaderThumbFetch : ReaderThumbOperation
 
 - (id)initWithRequest:(ReaderThumbRequest *)options;
+@property(strong) 	ReaderThumbRequest *request;
 
 @end
