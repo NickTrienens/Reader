@@ -40,8 +40,15 @@
 @property (nonatomic, assign, readonly) CGSize thumbSize;
 @property (nonatomic, assign, readonly) CGFloat scale;
 
+@property (strong) NSDate * creationDate;
+@property (strong) NSDate * finishedDate;
+@property (assign) BOOL readFromCache;
+@property (copy) void (^renderCompleteBlock)(ReaderThumbRequest* inFinishedRequst);
+
 + (id)newForView:(ReaderThumbView *)view fileURL:(NSURL *)url password:(NSString *)phrase guid:(NSString *)guid page:(NSInteger)page size:(CGSize)size;
 
 - (id)initWithView:(ReaderThumbView *)view fileURL:(NSURL *)url password:(NSString *)phrase guid:(NSString *)guid page:(NSInteger)page size:(CGSize)size;
+
+-(void)sendFinished;
 
 @end

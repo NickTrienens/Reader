@@ -175,6 +175,9 @@
 			dispatch_async(dispatch_get_main_queue(), // Queue image show on main thread
 			^{
 				if (thumbView.targetTag == targetTag) [thumbView showImage:image];
+				
+				self.request.finishedDate = [NSDate date];
+				[self.request sendFinished];
 			});
 		}
 

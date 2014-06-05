@@ -27,6 +27,12 @@
 
 @interface ReaderContentPage : UIView
 
+@property (nonatomic, assign) int page;
+@property (nonatomic, assign) int tilesRendered;
+
+@property(strong) NSDate * finishedDate;
+@property(strong) NSDate * startedDate;
+
 - (id)initWithURL:(NSURL *)fileURL page:(NSInteger)page password:(NSString *)phrase;
 
 - (id)processSingleTap:(UITapGestureRecognizer *)recognizer;

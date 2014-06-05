@@ -63,11 +63,13 @@
 		45BD5AFE13AE721A00D6FE97 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45BD5AFD13AE721A00D6FE97 /* MessageUI.framework */; };
 		45D5AD9F1610E66B00706B9A /* HISTORY.md in Resources */ = {isa = PBXBuildFile; fileRef = 45D5AD9E1610E66B00706B9A /* HISTORY.md */; };
 		45D5ADA31610EADD00706B9A /* ReaderDocumentOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */; };
-		80552DA118183C3100F7ED62 /* Reader.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 80552DA018183C3100F7ED62 /* Reader.pdf */; };
-		80552DA51818992400F7ED62 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80552DA41818992400F7ED62 /* CFNetwork.framework */; };
+		80552DA118183C3100F7ED62 /* Reader-1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 80552DA018183C3100F7ED62 /* Reader-1.pdf */; };
 		8072BCB01811809500D69542 /* ReaderCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCAF1811809500D69542 /* ReaderCollectionViewController.m */; };
 		8072BCB31811837500D69542 /* ReaderContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCB21811837500D69542 /* ReaderContentCollectionViewCell.m */; };
 		8072BCB61811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8072BCB51811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m */; };
+		8088E31A193FB517000EB65B /* Reader.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8088E319193FB517000EB65B /* Reader.pdf */; };
+		8088E31C193FB900000EB65B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8088E31B193FB900000EB65B /* SystemConfiguration.framework */; };
+		8088E31D193FB960000EB65B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80552DA41818992400F7ED62 /* CFNetwork.framework */; };
 		80B41E171843D1AF004A9654 /* ReaderPageBarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B41E161843D1AF004A9654 /* ReaderPageBarCollectionView.m */; };
 		80B41E1A1843D311004A9654 /* ReaderPageBarContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B41E191843D311004A9654 /* ReaderPageBarContentCollectionViewCell.m */; };
 /* End PBXBuildFile section */
@@ -155,7 +157,7 @@
 		45D5AD9E1610E66B00706B9A /* HISTORY.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HISTORY.md; sourceTree = "<group>"; };
 		45D5ADA11610EADC00706B9A /* ReaderDocumentOutline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderDocumentOutline.h; path = Sources/ReaderDocumentOutline.h; sourceTree = "<group>"; };
 		45D5ADA21610EADC00706B9A /* ReaderDocumentOutline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderDocumentOutline.m; path = Sources/ReaderDocumentOutline.m; sourceTree = "<group>"; };
-		80552DA018183C3100F7ED62 /* Reader.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = Reader.pdf; path = Resources/Reader.pdf; sourceTree = "<group>"; };
+		80552DA018183C3100F7ED62 /* Reader-1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Reader-1.pdf"; path = "Resources/Reader-1.pdf"; sourceTree = "<group>"; };
 		80552DA41818992400F7ED62 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8072BCAE1811809500D69542 /* ReaderCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCollectionViewController.h; sourceTree = "<group>"; };
 		8072BCAF1811809500D69542 /* ReaderCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCollectionViewController.m; sourceTree = "<group>"; };
@@ -163,6 +165,8 @@
 		8072BCB21811837500D69542 /* ReaderContentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderContentCollectionViewCell.m; path = Sources/ReaderContentCollectionViewCell.m; sourceTree = "<group>"; };
 		8072BCB41811A11900D69542 /* EdgeToEdgeCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EdgeToEdgeCollectionViewLayout.h; path = Sources/EdgeToEdgeCollectionViewLayout.h; sourceTree = "<group>"; };
 		8072BCB51811A11900D69542 /* EdgeToEdgeCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EdgeToEdgeCollectionViewLayout.m; path = Sources/EdgeToEdgeCollectionViewLayout.m; sourceTree = "<group>"; };
+		8088E319193FB517000EB65B /* Reader.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = Reader.pdf; path = Resources/Reader.pdf; sourceTree = "<group>"; };
+		8088E31B193FB900000EB65B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		80B41E151843D1AF004A9654 /* ReaderPageBarCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderPageBarCollectionView.h; path = Sources/ReaderPageBarCollectionView.h; sourceTree = "<group>"; };
 		80B41E161843D1AF004A9654 /* ReaderPageBarCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderPageBarCollectionView.m; path = Sources/ReaderPageBarCollectionView.m; sourceTree = "<group>"; };
 		80B41E181843D311004A9654 /* ReaderPageBarContentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderPageBarContentCollectionViewCell.h; path = Sources/ReaderPageBarContentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -175,7 +179,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80552DA51818992400F7ED62 /* CFNetwork.framework in Frameworks */,
+				8088E31D193FB960000EB65B /* CFNetwork.framework in Frameworks */,
+				8088E31C193FB900000EB65B /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -236,7 +241,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				80552DA018183C3100F7ED62 /* Reader.pdf */,
+				8088E319193FB517000EB65B /* Reader.pdf */,
+				80552DA018183C3100F7ED62 /* Reader-1.pdf */,
 				4541A9D7122EA716001A5E60 /* Localizable.strings */,
 				45AB72DF141FC04B003524C3 /* README.md */,
 				45D5AD9E1610E66B00706B9A /* HISTORY.md */,
@@ -248,6 +254,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8088E31B193FB900000EB65B /* SystemConfiguration.framework */,
 				80552DA41818992400F7ED62 /* CFNetwork.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -432,7 +439,7 @@
 				4541A9D8122EA716001A5E60 /* Localizable.strings in Resources */,
 				45AB72C6141FBFCA003524C3 /* AppIcon-057.png in Resources */,
 				45AB72C7141FBFCA003524C3 /* AppIcon-072.png in Resources */,
-				80552DA118183C3100F7ED62 /* Reader.pdf in Resources */,
+				80552DA118183C3100F7ED62 /* Reader-1.pdf in Resources */,
 				45AB72C8141FBFCA003524C3 /* AppIcon-114.png in Resources */,
 				45AB72C9141FBFCA003524C3 /* Reader-Email.png in Resources */,
 				45AB72CA141FBFCA003524C3 /* Reader-Email@2x.png in Resources */,
@@ -450,6 +457,7 @@
 				455C789E14268F6A0053D73B /* Reader-Button-H@2x.png in Resources */,
 				455C789F14268F6A0053D73B /* Reader-Button-N.png in Resources */,
 				455C78A014268F6A0053D73B /* Reader-Button-N@2x.png in Resources */,
+				8088E31A193FB517000EB65B /* Reader.pdf in Resources */,
 				4583767F1533B0AC003CD230 /* AppIcon-144.png in Resources */,
 				4544394917FDD5E700781873 /* AppIcon-120.png in Resources */,
 				4544D87C1610A3C2003DB132 /* Default-568h@2x.png in Resources */,

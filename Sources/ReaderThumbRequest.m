@@ -88,9 +88,22 @@
 		_targetTag = [_cacheKey hash]; _thumbView.targetTag = _targetTag;
 
 		_scale = [[UIScreen mainScreen] scale]; // Thumb screen scale
+		
+		self.creationDate = [NSDate date];
+		
 	}
 
 	return self;
+}
+
+-(void)sendFinished{
+	
+	NSLog(@"%ld : %f",  self.thumbPage, [self.finishedDate timeIntervalSinceDate:self.creationDate]);
+	if(self.renderCompleteBlock){
+		self.renderCompleteBlock(self);
+	}
+		
+	
 }
 
 @end

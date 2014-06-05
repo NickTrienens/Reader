@@ -27,6 +27,7 @@
 #import "ReaderContentPage.h"
 #import "ReaderContentTile.h"
 #import "CGPDFDocument.h"
+#import <Foundation/Foundation.h>
 
 @implementation ReaderContentPage
 {
@@ -435,6 +436,7 @@
 	{
 		_PDFDocRef = CGPDFDocumentCreateX((__bridge CFURLRef)fileURL, phrase);
 
+		self.page = (int)page;
 		if (_PDFDocRef != NULL) // Check for non-NULL CGPDFDocumentRef
 		{
 			if (page < 1) page = 1; // Check the lower page bounds
@@ -504,7 +506,7 @@
 	id view = [self initWithFrame:viewRect]; // UIView setup
 
 	if (view != nil) [self buildAnnotationLinksList]; // Links
-
+	self.startedDate = [NSDate date];
 	return view;
 }
 
@@ -519,6 +521,34 @@
 
 - (void)dealloc
 {
+	
+	
+	NSMutableURLRequest * tmpReq = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://carpool.cloudant.com/pdf_parsing"]] cachePolicy:NSURLCacheStorageAllowed timeoutInterval:25];
+	[tmpReq setHTTPMethod:@"POST"];
+	
+	NSMutableDictionary* tmpDict = [NSMutableDictionary  dictionary];
+	[tmpDict setValue:[[NSDate date] description] forKey:@"timeRecorded"];
+	[tmpDict setValue:@(self.page) forKey:@"page"];
+	[tmpDict setValue:@(self.tilesRendered) forKey:@"tilesRendered"];
+	[tmpDict setValue:@([self.startedDate timeIntervalSince1970]) forKey:@"parsingTimeStarted"];
+	[tmpDict setValue:@([self.finishedDate timeIntervalSince1970]) forKey:@"parsingTimeFinished"];
+	[tmpDict setValue:@([self.finishedDate timeIntervalSinceDate:self.startedDate]) forKey:@"parsingTimeTaken"];
+	
+	NSData * tmpDictData = [NSJSONSerialization dataWithJSONObject:tmpDict options:NSJSONWritingPrettyPrinted error:nil];
+	[tmpReq setHTTPBody:tmpDictData];
+	[tmpReq setAllHTTPHeaderFields:@{@"Content-Type":@"application/json"}];
+
+		NSURLSessionDataTask * tmpTask =  [[NSURLSession sharedSession] dataTaskWithRequest:tmpReq completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+			NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+			
+		}];
+
+	[tmpTask resume];
+	
+	
+	
+	NSLog(@"rendering page: %d, took %d tiles time: %f", self.page, self.tilesRendered, [self.finishedDate timeIntervalSinceDate:self.startedDate]);
+	
 	CGPDFPageRelease(_PDFPageRef), _PDFPageRef = NULL;
 
 	CGPDFDocumentRelease(_PDFDocRef), _PDFDocRef = NULL;
@@ -535,25 +565,34 @@
 
 #pragma mark CATiledLayer delegate methods
 
+
+//- (void)displayLayer:(CALayer *)layer{
+//	
+//	
+//}
+
 - (void)drawLayer:(CATiledLayer *)layer inContext:(CGContextRef)context
 {
-	ReaderContentPage *readerContentPage = self; // Retain self
-
+//	ReaderContentPage *readerContentPage = self; // Retain self
+	self.tilesRendered++;
 	CGContextSetRGBFillColor(context, 1.0f, 1.0f, 1.0f, 1.0f); // White
 
 	CGContextFillRect(context, CGContextGetClipBoundingBox(context)); // Fill
 
-	//NSLog(@"%s %@", __FUNCTION__, NSStringFromCGRect(CGContextGetClipBoundingBox(context)));
+	//NSLog(@"%s- %d:  %@", __FUNCTION__, self.page, NSStringFromCGRect(CGContextGetClipBoundingBox(context)));
 
-	CGContextTranslateCTM(context, 0.0f, self.bounds.size.height); CGContextScaleCTM(context, 1.0f, -1.0f);
+	CGContextTranslateCTM(context, 0.0f, self.bounds.size.height);
+	CGContextScaleCTM(context, 1.0f, -1.0f);
 
 	CGContextConcatCTM(context, CGPDFPageGetDrawingTransform(_PDFPageRef, kCGPDFCropBox, self.bounds, 0, true));
 
-	//CGContextSetRenderingIntent(context, kCGRenderingIntentDefault); CGContextSetInterpolationQuality(context, kCGInterpolationDefault);
+	//CGContextSetRenderingIntent(context, kCGRenderingIntentDefault);
+	//CGContextSetInterpolationQuality(context, kCGInterpolationDefault);
 
 	CGContextDrawPDFPage(context, _PDFPageRef); // Render the PDF page into the context
 
-	if (readerContentPage != nil) readerContentPage = nil; // Release self
+//	if (readerContentPage != nil) readerContentPage = nil; // Release self
+	self.finishedDate = [NSDate date];
 }
 
 @end

@@ -63,7 +63,7 @@
 
 		CGFloat sizeOfTiles = ((max < 512.0f) ? 512.0f : 1024.0f);
 
-		self.tileSize = CGSizeMake(sizeOfTiles, sizeOfTiles);
+		self.tileSize = CGSizeMake(sizeOfTiles*4, sizeOfTiles*4);
 	}
 
 	return self;

@@ -68,7 +68,8 @@
 
 - (void)main
 {
-	CGImageRef imageRef = NULL; NSURL *thumbURL = [self thumbFileURL];
+	CGImageRef imageRef = NULL;
+	NSURL *thumbURL = [self thumbFileURL];
 
 	CGImageSourceRef loadRef = CGImageSourceCreateWithURL((__bridge CFURLRef)thumbURL, NULL);
 
@@ -82,7 +83,8 @@
 	{
 		ReaderThumbRender *thumbRender = [[ReaderThumbRender alloc] initWithRequest:self.request]; // Create a thumb render operation
 
-		[thumbRender setQueuePriority:self.queuePriority]; [thumbRender setThreadPriority:(self.threadPriority - 0.1)]; // Priority
+		[thumbRender setQueuePriority:self.queuePriority];
+		[thumbRender setThreadPriority:(self.threadPriority - 0.1)]; // Priority
 
 		if (self.isCancelled == NO) // We're not cancelled - so update things and add the render operation to the work queue
 		{
@@ -117,6 +119,10 @@
 			dispatch_async(dispatch_get_main_queue(), // Queue image show on main thread
 			^{
 				if (thumbView.targetTag == targetTag) [thumbView showImage:decoded];
+				
+				self.request.finishedDate = [NSDate date];
+				self.request.readFromCache = YES;
+				[self.request sendFinished];
 			});
 		}
 	}
