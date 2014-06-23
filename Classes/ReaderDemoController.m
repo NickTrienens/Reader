@@ -180,6 +180,13 @@
 
 	ReaderDocument *document = [ReaderDocument withDocumentFilePath:filePath password:phrase];
 
+	CGSize tmpSize = [document getPageSize:1 forHeight:500];
+	NSLog(@"%@", NSStringFromCGSize(tmpSize));
+	tmpSize = [document getPageSize:1 forWidth:500];
+	NSLog(@"%@", NSStringFromCGSize(tmpSize));
+	
+	
+	
 	if (document != nil) // Must have a valid ReaderDocument object in order to proceed with things
 	{
 		ReaderCollectionViewController *readerViewController = [[ReaderCollectionViewController alloc] initWithReaderDocument:document];

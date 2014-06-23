@@ -372,7 +372,7 @@
 				}
 			}
 			
-			DLog(@"%@", NSStringFromCGPoint([recognizer locationInView:self.view]));
+			NSLog(@"%@", NSStringFromCGPoint([recognizer locationInView:self.view]));
 			if(targetView == nil)
 				return;
 

@@ -49,6 +49,7 @@
 - (void)updateProperties;
 
 -(CGSize)getPageSize:(int)inPage forHeight:(CGFloat) inHeight;
+-(CGSize)getPageSize:(int)inPage forWidth:(CGFloat) inWidth;
 
 
 @end

@@ -306,18 +306,35 @@
 }
 
 -(CGSize)getPageSize:(int)inPage forHeight:(CGFloat) inHeight{
-
+	return [self getPageSize:inPage forHeight:inHeight forWidth: 0];
+	
+}
+-(CGSize)getPageSize:(int)inPage forWidth:(CGFloat) inWidth{
+	return [self getPageSize:inPage forHeight:0 forWidth:inWidth];
+	
+}
+-(CGSize)getPageSize:(int)inPage forHeight:(CGFloat) inHeight forWidth:(CGFloat)inWidth{
+	
 	CFURLRef fileURL = (__bridge CFURLRef)self.fileURL;
 	CGPDFDocumentRef thePDFDocRef = CGPDFDocumentCreateX(fileURL, self.password);
-
+	
 	if (thePDFDocRef != NULL) // Check for non-NULL CGPDFDocumentRef
 	{
 		CGPDFPageRef thePDFPageRef = CGPDFDocumentGetPage(thePDFDocRef, inPage);
 		
 		if (thePDFPageRef != NULL) // Check for non-NULL CGPDFPageRef
 		{
-			CGFloat thumb_w = 19000; // Maximum thumb width
-			CGFloat thumb_h = inHeight; // Maximum thumb height
+			
+			CGFloat thumb_w;
+			CGFloat thumb_h;
+			
+			if(inHeight != 0.0 ){
+				thumb_w = 19000; // Maximum thumb width
+				thumb_h = inHeight; // Maximum thumb height
+			}else{
+				thumb_w = inWidth; // Maximum thumb width
+				thumb_h = 19000; // Maximum thumb height
+			}
 			
 			CGRect cropBoxRect = CGPDFPageGetBoxRect(thePDFPageRef, kCGPDFCropBox);
 			CGRect mediaBoxRect = CGPDFPageGetBoxRect(thePDFPageRef, kCGPDFMediaBox);
@@ -369,8 +386,11 @@
 		}
 		CGPDFDocumentRelease(thePDFDocRef);
 	}
-
-	return CGSizeMake(inHeight, inHeight);
+	if (inHeight != 0.0 ){
+		return CGSizeMake(inHeight, inHeight);
+	}else{
+		return CGSizeMake(inWidth, inWidth);
+	}
 }
 
 #pragma mark NSCoding protocol methods
