@@ -38,13 +38,13 @@
 @interface ReaderCollectionViewController : UIViewController<UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate, ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UICollectionViewDelegate>
 {
 	
-	ReaderMainToolbar *mainToolbar;
+	
 	
 	ReaderPageBarCollectionView *mainPagebar;
 	
 
 }
-
+@property(strong) ReaderMainToolbar *mainToolbar;
 @property(assign) NSInteger currentPage;
 @property(assign) NSInteger throttler;
 @property(strong) ReaderDocument *document;
@@ -58,4 +58,7 @@
 - (void)decrementPageNumber;
 - (void)incrementPageNumber;
 - (void)calculateCurrentPage;
+
+//-(ReaderMainToolbar*)mainToolbar;
+
 @end

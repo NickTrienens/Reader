@@ -54,6 +54,7 @@
 
 - (void)setBookmarkState:(BOOL)state;
 
+- (void)doneButtonTapped:(UIButton *)button;
 
 - (void)hideToolbar;
 - (void)showToolbar;
