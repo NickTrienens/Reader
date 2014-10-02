@@ -75,6 +75,9 @@
 
 + (void)createThumbCacheWithGUID:(NSString *)guid
 {
+	if(guid == nil)
+		return;
+
 	NSFileManager *fileManager = [NSFileManager new]; // File manager instance
 
 	NSString *cachePath = [ReaderThumbCache thumbCachePathForGUID:guid]; // Thumb cache path
@@ -84,6 +87,9 @@
 
 + (void)removeThumbCacheWithGUID:(NSString *)guid
 {
+	if(guid == nil)
+		return;
+	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0),
 	^{
 		NSFileManager *fileManager = [NSFileManager new]; // File manager instance
