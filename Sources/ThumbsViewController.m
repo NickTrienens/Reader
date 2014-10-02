@@ -31,7 +31,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface ThumbsViewController () <ThumbsMainToolbarDelegate, ReaderThumbsViewDelegate>
+@interface ThumbsViewController () <ThumbsMainToolbarDelegate, ReaderThumbsViewDelegate,UINavigationBarDelegate>
 
 @end
 
