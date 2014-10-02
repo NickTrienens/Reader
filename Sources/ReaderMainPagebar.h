@@ -54,7 +54,7 @@
 
 @interface ReaderMainPagebar : UINavigationBar<ReaderPagebarControls>
 
-@property (nonatomic, weak, readwrite) id <ReaderMainPagebarDelegate> delegate;
+@property (nonatomic, weak, readwrite) id <ReaderMainPagebarDelegate,UINavigationBarDelegate> delegate;
 
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;
