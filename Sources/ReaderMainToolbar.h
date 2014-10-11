@@ -48,7 +48,7 @@
 @property(strong) UIButton * flagButton;
 @property(strong) UINavigationItem * item;
 
-@property (nonatomic, weak, readwrite) id <ReaderMainToolbarDelegate> delegate;
+@property (nonatomic, weak, readwrite) id <ReaderMainToolbarDelegate, UINavigationBarDelegate> delegate;
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;
 

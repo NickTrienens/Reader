@@ -39,7 +39,7 @@
 
 @end
 
-@interface ReaderViewController : UIViewController
+@interface ReaderViewController : UIViewController<UINavigationBarDelegate, UIToolbarDelegate>
 {
 	ReaderDocument *document;
 	

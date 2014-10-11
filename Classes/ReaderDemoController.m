@@ -176,7 +176,18 @@
 
 	NSArray *pdfs = [[NSBundle mainBundle] pathsForResourcesOfType:@"pdf" inDirectory:nil];
 
-	NSString *filePath = [pdfs lastObject]; assert(filePath != nil); // Path to last PDF file
+	NSString *filePath = [pdfs lastObject];
+	
+	//move the pdf to the local docs dir
+	NSString * tmpFilePath = [[ReaderDocument documentsPath] stringByAppendingPathComponent:[filePath lastPathComponent]];
+	if(![[NSFileManager defaultManager] fileExistsAtPath: tmpFilePath]){
+		NSError * tmpError = nil;
+		[[NSFileManager defaultManager] copyItemAtPath:filePath toPath:tmpFilePath error:&tmpError];
+
+	}
+	filePath = tmpFilePath;
+	
+	assert(filePath != nil); // Path to last PDF file
 
 	ReaderDocument *document = [ReaderDocument withDocumentFilePath:filePath password:phrase];
 

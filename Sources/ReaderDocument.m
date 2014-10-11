@@ -108,9 +108,16 @@
 
 	NSRange range = [fullFilePath rangeOfString:applicationPath]; // Look for the application path
 
-	assert(range.location != NSNotFound); // Ensure that the application path is in the full file path
-
-	return [fullFilePath stringByReplacingCharactersInRange:range withString:@""]; // Strip it out
+	//assert(range.location != NSNotFound); // Ensure that the application path is in the full file path
+	if(range.location != NSNotFound)
+	{
+		return [fullFilePath stringByReplacingCharactersInRange:range withString:@""]; // Strip it out
+	}
+	else
+	{
+		return [fullFilePath lastPathComponent];
+	}
+	
 }
 
 + (NSString *)archiveFilePath:(NSString *)filename
@@ -258,7 +265,7 @@
 	if (_fileURL == nil) // Create and keep the file URL the first time it is requested
 	{
 		NSString *fullFilePath = [[ReaderDocument applicationPath] stringByAppendingPathComponent:_fileName];
-
+		
 		_fileURL = [[NSURL alloc] initFileURLWithPath:fullFilePath isDirectory:NO]; // File URL from full file path
 	}
 

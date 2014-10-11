@@ -51,5 +51,6 @@
 
 -(CGSize)getPageSize:(int)inPage forHeight:(CGFloat) inHeight;
 
++ (NSString *)documentsPath;
 
 @end

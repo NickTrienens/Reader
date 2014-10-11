@@ -41,7 +41,7 @@
 
 @end
 
-@interface ThumbsViewController : UIViewController
+@interface ThumbsViewController : UIViewController<UINavigationBarDelegate>
 
 @property (nonatomic, weak, readwrite) id <ThumbsViewControllerDelegate> delegate;
 

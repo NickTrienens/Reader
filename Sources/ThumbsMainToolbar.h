@@ -38,10 +38,10 @@
 
 @end
 
-@interface ThumbsMainToolbar : UINavigationBar
+@interface ThumbsMainToolbar : UINavigationBar<UIToolbarDelegate>
 @property(strong) UINavigationItem * item;
 
-@property (nonatomic, weak, readwrite) id <ThumbsMainToolbarDelegate> delegate;
+@property (nonatomic, weak, readwrite) id <ThumbsMainToolbarDelegate, UINavigationBarDelegate> delegate;
 
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title;
 
