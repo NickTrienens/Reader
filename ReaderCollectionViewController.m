@@ -170,12 +170,6 @@
 }
 
 
--(void)viewWillAppear:(BOOL)animated{
-	
-	//[(UICollectionViewFlowLayout*)self.pdfPagesView.collectionViewLayout setItemSize: CGRectInset(self.pdfPagesView.bounds,5,0).size]; // Update content views
-
-}
-
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     NSLog(@"rotated: %@", NSStringFromCGRect(self.pdfPagesView.frame));
