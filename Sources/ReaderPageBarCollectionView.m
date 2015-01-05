@@ -66,7 +66,7 @@
 #pragma mark UICollection Data source
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
 	
-	CGSize tmpPageSize = [self.document getPageSize:indexPath.item+1 forHeight:80];
+	CGSize tmpPageSize = [self.document getPageSize:(int)indexPath.item+1 forHeight:80];
 	
 	return tmpPageSize;
 	

@@ -38,7 +38,7 @@
 
 @end
 
-@interface ThumbsMainToolbar : UINavigationBar
+@interface ThumbsMainToolbar : UINavigationBar<UINavigationBarDelegate>
 @property(strong) UINavigationItem * item;
 
 @property (nonatomic, weak, readwrite) id <ThumbsMainToolbarDelegate,UINavigationBarDelegate> delegate;
