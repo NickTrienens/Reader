@@ -24,7 +24,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ReaderCollectionViewController.h"
 
-@interface ReaderDemoController : UIViewController
+@interface ReaderDemoController : UIViewController<ReaderCollectionViewControllerDelegate>
 
 @end

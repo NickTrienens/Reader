@@ -1,6 +1,6 @@
 //
 //	ReaderMainToolbar.h
-//	Reader v2.6.0
+//	Reader v2.7.1
 //
 //	Created by Julius Oklamcak on 2011-07-01.
 //	Copyright © 2011-2013 Julius Oklamcak. All rights reserved.
@@ -45,8 +45,10 @@
 @interface ReaderMainToolbar : UINavigationBar
 
 @property(strong) UILabel * titleLabel;
+@property(strong) UIButton * flagButton;
+@property(strong) UINavigationItem * item;
 
-@property (nonatomic, unsafe_unretained, readwrite) id <ReaderMainToolbarDelegate> delegate;
+@property (nonatomic, weak, readwrite) id <ReaderMainToolbarDelegate,UINavigationBarDelegate> delegate;
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;
 

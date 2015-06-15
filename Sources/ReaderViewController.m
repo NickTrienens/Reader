@@ -35,7 +35,7 @@
 #import <MessageUI/MessageUI.h>
 
 @interface ReaderViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate,
-									ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate>
+									ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate,UINavigationBarDelegate>
 @end
 
 @implementation ReaderViewController
@@ -44,6 +44,8 @@
 #pragma mark Constants
 
 #define PAGING_VIEWS 3
+
+#define STATUS_HEIGHT 20.0f
 
 #define TOOLBAR_HEIGHT 44.0f
 #define PAGEBAR_HEIGHT 48.0f
@@ -60,11 +62,11 @@
 {
 	NSInteger count = [document.pageCount integerValue];
 
-	if (count > PAGING_VIEWS) count = PAGING_VIEWS; // Limit
+	//if (count > PAGING_VIEWS) count = PAGING_VIEWS; // Limit
 
 	CGFloat contentHeight = theScrollView.bounds.size.height;
 
-	CGFloat contentWidth = (theScrollView.bounds.size.width * count);
+	CGFloat contentWidth = (theScrollView.bounds.size.width * count-1);
 
 	theScrollView.contentSize = CGSizeMake(contentWidth, contentHeight);
 }
@@ -93,7 +95,9 @@
 
 			ReaderContentView *contentView = [contentViews objectForKey:key];
 
-			contentView.frame = viewRect; if (page == number) contentOffset = viewRect.origin;
+			contentView.frame = viewRect;
+			if (page == number)
+				contentOffset = viewRect.origin;
 
 			viewRect.origin.x += viewRect.size.width; // Next view frame position
 		}
@@ -122,7 +126,8 @@
 		NSInteger maxPage = [document.pageCount integerValue];
 		NSInteger minPage = 1;
 
-		if ((page < minPage) || (page > maxPage)) return;
+		if ((page < minPage) || (page > maxPage))
+			return;
 
 		if (maxPage <= PAGING_VIEWS) // Few pages
 		{
@@ -134,18 +139,23 @@
 			minValue = (page - 1);
 			maxValue = (page + 1);
 
-			if (minValue < minPage)
-				{minValue++; maxValue++;}
-			else
-				if (maxValue > maxPage)
-					{minValue--; maxValue--;}
+			if (minValue < minPage){
+				minValue++;
+				maxValue++;
+			}else{
+				if (maxValue > maxPage){
+					minValue--;
+					maxValue--;
+				}
+			}
 		}
 
 		NSMutableIndexSet *newPageSet = [NSMutableIndexSet new];
 
 		NSMutableDictionary *unusedViews = [contentViews mutableCopy];
 
-		CGRect viewRect = CGRectZero; viewRect.size = theScrollView.bounds.size;
+		CGRect viewRect = CGRectZero;
+		viewRect.size = theScrollView.bounds.size;
 
 		for (NSInteger number = minValue; number <= maxValue; number++)
 		{
@@ -155,21 +165,23 @@
 
 			if (contentView == nil) // Create a brand new document content view
 			{
-				NSURL *fileURL = document.fileURL; NSString *phrase = document.password; // Document properties
+				NSURL *fileURL = document.fileURL;
+				NSString *phrase = document.password; // Document properties
 
 				contentView = [[ReaderContentView alloc] initWithFrame:viewRect fileURL:fileURL page:number password:phrase];
 
-				[theScrollView addSubview:contentView]; [contentViews setObject:contentView forKey:key];
+				[theScrollView addSubview:contentView];
+				[contentViews setObject:contentView forKey:key];
 
-				contentView.message = self; [newPageSet addIndex:number];
+				contentView.message = self;
+				[newPageSet addIndex:number];
 			}
 			else // Reposition the existing content view
 			{
-				contentView.frame = viewRect; [contentView zoomReset];
-
+				contentView.frame = viewRect;
+				[contentView zoomReset];
 				[unusedViews removeObjectForKey:key];
 			}
-
 			viewRect.origin.x += viewRect.size.width;
 		}
 
@@ -291,9 +303,19 @@
 
 	assert(document != nil); // Must have a valid ReaderDocument
 
-	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+
+	
+	self.view.backgroundColor = [UIColor darkGrayColor];
 
 	CGRect viewRect = self.view.bounds; // View controller's view bounds
+
+	if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+	{
+		if ([self prefersStatusBarHidden] == NO) // Visible status bar
+		{
+			viewRect.origin.y += STATUS_HEIGHT;
+		}
+	}
 
 	theScrollView = [[UIScrollView alloc] initWithFrame:viewRect]; // All
 
@@ -460,6 +482,27 @@
 
 #pragma mark UIScrollViewDelegate methods
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	__block NSInteger page = 0;
+	
+	CGFloat contentOffsetX = scrollView.contentOffset.x;
+	
+	[contentViews enumerateKeysAndObjectsUsingBlock: // Enumerate content views
+	 ^(id key, id object, BOOL *stop){
+		 ReaderContentView *contentView = object;
+		 
+		 if (CGRectGetMinX(contentView.frame) <= contentOffsetX && CGRectGetMaxX(contentView.frame) >= contentOffsetX )
+		 {
+			 page = contentView.tag;
+			 *stop = YES;
+		 }
+	 }];
+	
+	if (page != 0) [self showDocumentPage:page]; // Show the page
+}
+
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
 	__block NSInteger page = 0;
@@ -473,7 +516,8 @@
 
 			if (contentView.frame.origin.x == contentOffsetX)
 			{
-				page = contentView.tag; *stop = YES;
+				page = contentView.tag;
+				*stop = YES;
 			}
 		}
 	];
@@ -742,7 +786,7 @@
 	thumbsViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	thumbsViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
-	[self presentViewController:thumbsViewController animated:NO completion:nil];
+	[self presentViewController:thumbsViewController animated:NO completion:NULL];
 }
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar printButton:(UIButton *)button
@@ -826,7 +870,7 @@
 
 			mailComposer.mailComposeDelegate = self; // Set the delegate
 
-			[self presentViewController:mailComposer animated:YES completion:nil];
+			[self presentViewController:mailComposer animated:YES completion:NULL];
 		}
 	}
 
@@ -857,8 +901,7 @@
 		if ((result == MFMailComposeResultFailed) && (error != NULL)) NSLog(@"%@", error);
 	#endif
 
-	[self dismissViewControllerAnimated:YES completion:nil];
-//	[self dismissModalViewControllerAnimated:YES]; // Dismiss
+	[self dismissViewControllerAnimated:YES completion:NULL]; // Dismiss
 }
 
 #pragma mark ThumbsViewControllerDelegate methods
@@ -867,8 +910,7 @@
 {
 	[self updateToolbarBookmarkIcon]; // Update bookmark icon
 
-//	[self dismissModalViewControllerAnimated:NO]; // Dismiss
-	[self dismissViewControllerAnimated:NO completion:nil];
+	[self dismissViewControllerAnimated:YES completion:NULL]; // Dismiss
 }
 
 - (void)thumbsViewController:(ThumbsViewController *)viewController gotoPage:(NSInteger)page

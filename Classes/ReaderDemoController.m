@@ -1,6 +1,6 @@
 //
 //	ReaderDemoController.m
-//	Reader v2.6.0
+//	Reader v2.7.0
 //
 //	Created by Julius Oklamcak on 2011-07-01.
 //	Copyright © 2011-2013 Julius Oklamcak. All rights reserved.
@@ -25,6 +25,8 @@
 
 #import "ReaderDemoController.h"
 #import "ReaderViewController.h"
+
+#import "ReaderCollectionViewController.h"
 
 @interface ReaderDemoController () <ReaderViewControllerDelegate>
 
@@ -79,7 +81,7 @@
 
 	tapLabel.text = @"Tap";
 	tapLabel.textColor = [UIColor whiteColor];
-	tapLabel.textAlignment = UITextAlignmentCenter;
+	tapLabel.textAlignment = NSTextAlignmentCenter;
 	tapLabel.backgroundColor = [UIColor clearColor];
 	tapLabel.font = [UIFont systemFontOfSize:24.0f];
 	tapLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -180,7 +182,7 @@
 
 	if (document != nil) // Must have a valid ReaderDocument object in order to proceed with things
 	{
-		ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
+		ReaderCollectionViewController *readerViewController = [[ReaderCollectionViewController alloc] initWithReaderDocument:document];
 
 		readerViewController.delegate = self; // Set the ReaderViewController delegate to self
 
@@ -193,7 +195,7 @@
 		readerViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		readerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
-		[self presentModalViewController:readerViewController animated:YES];
+		[self presentViewController:readerViewController animated:YES completion:NULL];
 
 #endif // DEMO_VIEW_CONTROLLER_PUSH
 	}
@@ -209,7 +211,7 @@
 
 #else // dismiss the modal view controller
 
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:NULL];
 
 #endif // DEMO_VIEW_CONTROLLER_PUSH
 }

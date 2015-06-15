@@ -32,7 +32,7 @@
 
 @implementation ReaderThumbRender
 {
-	ReaderThumbRequest *request;
+
 }
 
 #pragma mark ReaderThumbRender instance methods
@@ -41,7 +41,7 @@
 {
 	if ((self = [super initWithGUID:options.guid]))
 	{
-		request = options;
+		self.request = options;
 	}
 
 	return self;
@@ -51,31 +51,31 @@
 {
 	[super cancel]; // Cancel the operation
 
-	request.thumbView.operation = nil; // Break retain loop
+	self.request.thumbView.operation = nil; // Break retain loop
 
-	request.thumbView = nil; // Release target thumb view on cancel
+	self.request.thumbView = nil; // Release target thumb view on cancel
 
-	[[ReaderThumbCache sharedInstance] removeNullForKey:request.cacheKey];
+	[[ReaderThumbCache sharedInstance] removeNullForKey:self.request.cacheKey];
 }
 
 - (NSURL *)thumbFileURL
 {
 	NSFileManager *fileManager = [NSFileManager new]; // File manager instance
 
-	NSString *cachePath = [ReaderThumbCache thumbCachePathForGUID:request.guid]; // Thumb cache path
+	NSString *cachePath = [ReaderThumbCache thumbCachePathForGUID:self.request.guid]; // Thumb cache path
 
 	[fileManager createDirectoryAtPath:cachePath withIntermediateDirectories:NO attributes:nil error:NULL];
 
-	NSString *fileName = [NSString stringWithFormat:@"%@.png", request.thumbName]; // Thumb file name
+	NSString *fileName = [NSString stringWithFormat:@"%@.png", self.request.thumbName]; // Thumb file name
 
 	return [NSURL fileURLWithPath:[cachePath stringByAppendingPathComponent:fileName]]; // File URL
 }
 
 - (void)main
 {
-	NSInteger page = request.thumbPage; NSString *password = request.password;
+	NSInteger page = self.request.thumbPage; NSString *password = self.request.password;
 
-	CGImageRef imageRef = NULL; CFURLRef fileURL = (__bridge CFURLRef)request.fileURL;
+	CGImageRef imageRef = NULL; CFURLRef fileURL = (__bridge CFURLRef)self.request.fileURL;
 
 	CGPDFDocumentRef thePDFDocRef = CGPDFDocumentCreateX(fileURL, password);
 
@@ -85,8 +85,8 @@
 
 		if (thePDFPageRef != NULL) // Check for non-NULL CGPDFPageRef
 		{
-			CGFloat thumb_w = request.thumbSize.width; // Maximum thumb width
-			CGFloat thumb_h = request.thumbSize.height; // Maximum thumb height
+			CGFloat thumb_w = self.request.thumbSize.width; // Maximum thumb width
+			CGFloat thumb_h = self.request.thumbSize.height; // Maximum thumb height
 
 			CGRect cropBoxRect = CGPDFPageGetBoxRect(thePDFPageRef, kCGPDFCropBox);
 			CGRect mediaBoxRect = CGPDFPageGetBoxRect(thePDFPageRef, kCGPDFMediaBox);
@@ -129,7 +129,7 @@
 
 			if (target_w % 2) target_w--; if (target_h % 2) target_h--; // Even
 
-			target_w *= request.scale; target_h *= request.scale; // Screen scale
+			target_w *= self.request.scale; target_h *= self.request.scale; // Screen scale
 
 			CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB(); // RGB color space
 
@@ -162,15 +162,15 @@
 
 	if (imageRef != NULL) // Create UIImage from CGImage and show it, then save thumb as PNG
 	{
-		UIImage *image = [UIImage imageWithCGImage:imageRef scale:request.scale orientation:UIImageOrientationUp];
+		UIImage *image = [UIImage imageWithCGImage:imageRef scale:self.request.scale orientation:UIImageOrientationUp];
 
-		[[ReaderThumbCache sharedInstance] setObject:image forKey:request.cacheKey]; // Update cache
+		[[ReaderThumbCache sharedInstance] setObject:image forKey:self.request.cacheKey]; // Update cache
 
 		if (self.isCancelled == NO) // Show the image in the target thumb view on the main thread
 		{
-			ReaderThumbView *thumbView = request.thumbView; // Target thumb view for image show
+			ReaderThumbView *thumbView = self.request.thumbView; // Target thumb view for image show
 
-			NSUInteger targetTag = request.targetTag; // Target reference tag for image show
+			NSUInteger targetTag = self.request.targetTag; // Target reference tag for image show
 
 			dispatch_async(dispatch_get_main_queue(), // Queue image show on main thread
 			^{
@@ -195,10 +195,10 @@
 	}
 	else // No image - so remove the placeholder object from the cache
 	{
-		[[ReaderThumbCache sharedInstance] removeNullForKey:request.cacheKey];
+		[[ReaderThumbCache sharedInstance] removeNullForKey:self.request.cacheKey];
 	}
 
-	request.thumbView.operation = nil; // Break retain loop
+	self.request.thumbView.operation = nil; // Break retain loop
 }
 
 @end

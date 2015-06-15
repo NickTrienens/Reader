@@ -49,14 +49,14 @@
 		self.autoresizingMask = UIViewAutoresizingNone;
 		self.backgroundColor = [UIColor clearColor];
 
-		imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+		self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
 
-		imageView.autoresizesSubviews = NO;
-		imageView.userInteractionEnabled = NO;
-		imageView.autoresizingMask = UIViewAutoresizingNone;
-		imageView.contentMode = UIViewContentModeScaleAspectFit;
+		self.imageView.autoresizesSubviews = NO;
+		self.imageView.userInteractionEnabled = NO;
+		self.imageView.autoresizingMask = UIViewAutoresizingNone;
+		self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
-		[self addSubview:imageView];
+		[self addSubview:self.imageView];
 	}
 
 	return self;
@@ -64,7 +64,7 @@
 
 - (void)showImage:(UIImage *)image
 {
-	imageView.image = image; // Show image
+	self.imageView.image = image; // Show image
 }
 
 - (void)showTouched:(BOOL)touched
@@ -87,7 +87,7 @@
 
 	[self.operation cancel]; // Cancel operation
 
-	imageView.image = nil; // Release image
+	self.imageView.image = nil; // Release image
 }
 
 @end

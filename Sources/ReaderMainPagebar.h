@@ -1,6 +1,6 @@
 //
 //	ReaderMainPagebar.h
-//	Reader v2.6.0
+//	Reader v2.7.1
 //
 //	Created by Julius Oklamcak on 2011-09-01.
 //	Copyright © 2011-2013 Julius Oklamcak. All rights reserved.
@@ -32,18 +32,29 @@
 @class ReaderPagebarThumb;
 @class ReaderDocument;
 
+
+@protocol ReaderPagebarControls <NSObject>
+
+@required // Delegate protocols
+- (void)hidePagebar;
+- (void)showPagebar;
+
+- (void)updatePagebar;
+
+@end
+
+
 @protocol ReaderMainPagebarDelegate <NSObject>
 
 @required // Delegate protocols
 
-- (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page;
+- (void)pagebar:(UIView<ReaderPagebarControls> *)pagebar gotoPage:(NSInteger)page;
 
 @end
 
-@interface ReaderMainPagebar : UINavigationBar
+@interface ReaderMainPagebar : UINavigationBar<ReaderPagebarControls>
 
-@property (nonatomic, unsafe_unretained, readwrite) id <ReaderMainPagebarDelegate> delegate;
-@property(strong) UIView *pageNumberView;
+@property (nonatomic, weak, readwrite) id <ReaderMainPagebarDelegate,UINavigationBarDelegate> delegate;
 
 
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object;

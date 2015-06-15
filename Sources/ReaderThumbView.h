@@ -29,9 +29,9 @@
 {
 @protected // Instance variables
 
-	UIImageView *imageView;
+	
 }
-
+@property (strong) UIImageView *imageView;
 @property (atomic, strong, readwrite) NSOperation *operation;
 
 @property (nonatomic, assign, readwrite) NSUInteger targetTag;

@@ -41,6 +41,8 @@
 
 	UILabel *pageNumberLabel;
 
+	UIView * pageNumberView;
+	
 	NSTimer *enableTimer;
 	NSTimer *trackTimer;
 }
@@ -122,7 +124,7 @@
 	{
 		NSInteger pages = [document.pageCount integerValue]; // Total pages
 
-		NSString *format = NSLocalizedString(@"%d of %d", @"format"); // Format
+		NSString *format = NSLocalizedString(@"%i of %i", @"format"); // Format
 
 		NSString *number = [NSString stringWithFormat:format, page, pages]; // Text
 
@@ -154,23 +156,23 @@
 		CGFloat numberX = ((self.bounds.size.width - PAGE_NUMBER_WIDTH) / 2.0f);
 		CGRect numberRect = CGRectMake(numberX, numberY, PAGE_NUMBER_WIDTH, PAGE_NUMBER_HEIGHT);
 
-		self.pageNumberView = [[UIView alloc] initWithFrame:numberRect]; // Page numbers view
-
-		self.pageNumberView.autoresizesSubviews = NO;
-		self.pageNumberView.userInteractionEnabled = NO;
-		self.pageNumberView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-		self.pageNumberView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
-
-		self.pageNumberView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-		self.pageNumberView.layer.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.6f].CGColor;
-		self.pageNumberView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.pageNumberView.bounds].CGPath;
-		self.pageNumberView.layer.shadowRadius = 2.0f;
-		self.pageNumberView.layer.shadowOpacity = 1.0f;
-
-		CGRect textRect = CGRectInset(self.pageNumberView.bounds, 4.0f, 2.0f); // Inset the text a bit
-
+		
+		pageNumberView = [[UIView alloc] initWithFrame:numberRect]; // Page numbers view
+		
+		pageNumberView.autoresizesSubviews = NO;
+		pageNumberView.userInteractionEnabled = NO;
+		pageNumberView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+		pageNumberView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
+		
+		pageNumberView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+		pageNumberView.layer.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.6f].CGColor;
+		pageNumberView.layer.shadowPath = [UIBezierPath bezierPathWithRect:pageNumberView.bounds].CGPath;
+		pageNumberView.layer.shadowRadius = 2.0f; pageNumberView.layer.shadowOpacity = 1.0f;
+		
+		CGRect textRect = CGRectInset(pageNumberView.bounds, 4.0f, 2.0f); // Inset the text a bit
+		
 		pageNumberLabel = [[UILabel alloc] initWithFrame:textRect]; // Page numbers label
-
+		
 		pageNumberLabel.autoresizesSubviews = NO;
 		pageNumberLabel.autoresizingMask = UIViewAutoresizingNone;
 		pageNumberLabel.textAlignment = NSTextAlignmentCenter;
@@ -180,12 +182,15 @@
 		pageNumberLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		pageNumberLabel.shadowColor = [UIColor blackColor];
 		pageNumberLabel.adjustsFontSizeToFitWidth = YES;
-		pageNumberLabel.minimumScaleFactor = 0.80f;
+		pageNumberLabel.minimumScaleFactor = 0.75f;
+		
+		[pageNumberView addSubview:pageNumberLabel]; // Add label view
 
-		[self.pageNumberView addSubview:pageNumberLabel]; // Add label view
+		[self addSubview:pageNumberView]; // Add page numbers display view
 
-		[self addSubview:self.pageNumberView]; // Add page numbers display view
-
+		
+		
+		
 		trackControl = [[ReaderTrackControl alloc] initWithFrame:self.bounds]; // Track control view
 
 		[trackControl addTarget:self action:@selector(trackViewTouchDown:) forControlEvents:UIControlEventTouchDown];
@@ -558,11 +563,10 @@
 
 		UIColor *background = [UIColor colorWithWhite:0.8f alpha:value];
 
-		self.backgroundColor = background; imageView.backgroundColor = background;
-
-		imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
-
-		imageView.layer.borderWidth = 1.0f; // Give the thumb image view a border
+		self.backgroundColor = background;
+		self.imageView.backgroundColor = background;
+		self.imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
+		self.imageView.layer.borderWidth = 0.0f; // Give the thumb image view a border
 	}
 
 	return self;

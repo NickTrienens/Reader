@@ -1,6 +1,6 @@
 //
 //	ThumbsMainToolbar.h
-//	Reader v2.6.0
+//	Reader v2.7.1
 //
 //	Created by Julius Oklamcak on 2011-09-01.
 //	Copyright © 2011-2013 Julius Oklamcak. All rights reserved.
@@ -39,8 +39,9 @@
 @end
 
 @interface ThumbsMainToolbar : UINavigationBar
+@property(strong) UINavigationItem * item;
 
-@property (nonatomic, unsafe_unretained, readwrite) id <ThumbsMainToolbarDelegate> delegate;
+@property (nonatomic, weak, readwrite) id <ThumbsMainToolbarDelegate,UINavigationBarDelegate> delegate;
 
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title;
 
