@@ -102,7 +102,7 @@
 
 + (NSString *)relativeFilePath:(NSString *)fullFilePath
 {
-    if(fullFilePath){
+    if(fullFilePath == nil){
         return nil;
     }
 	//assert(fullFilePath != nil); // Ensure that the full file path is not nil
@@ -112,8 +112,8 @@
 	NSRange range = [fullFilePath rangeOfString:applicationPath]; // Look for the application path
 
 	//assert(range.location != NSNotFound); // Ensure that the application path is in the full file path
-    if(range.location != NSNotFound){
-        return nil;
+    if(range.location == NSNotFound){
+        return fullFilePath;
     }
     
 	return [fullFilePath stringByReplacingCharactersInRange:range withString:@""]; // Strip it out
