@@ -108,9 +108,11 @@
 	if(page > 1)
 		page--;
 	
-	NSIndexPath * tmpIndexPath = [NSIndexPath indexPathForItem:page inSection:0];
-	[self.pdfPagesView selectItemAtIndexPath:tmpIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
-
+    if(page < [self.pdfPagesView numberOfItemsInSection:0]){
+    
+        NSIndexPath * tmpIndexPath = [NSIndexPath indexPathForItem:page inSection:0];
+        [self.pdfPagesView selectItemAtIndexPath:tmpIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionCenteredHorizontally];
+    }
 	
 }
 

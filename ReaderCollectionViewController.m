@@ -362,8 +362,10 @@
 		
 		if (CGRectContainsPoint(areaRect, point)) // Single tap is inside the area
 		{
-
-			ReaderContentView *targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
+            ReaderContentView *targetView = nil;
+            if([[self.pdfPagesView visibleCells] count]>0){
+                targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
+            }
 
 			
 			id target = [targetView processSingleTap:recognizer]; // Target
@@ -461,8 +463,11 @@
 		
 		if (CGRectContainsPoint(zoomArea, point)) // Double tap is in the zoom area
 		{
-			ReaderContentView *targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
-			
+		//	ReaderContentView *targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
+            ReaderContentView *targetView = nil;
+            if([[self.pdfPagesView visibleCells] count]>0){
+                targetView = [(ReaderContentCollectionViewCell*)[self.pdfPagesView visibleCells][0] pdfView];
+            }
 			switch (recognizer.numberOfTouchesRequired) // Touches count
 			{
 				case 1: // One finger double tap: zoom ++

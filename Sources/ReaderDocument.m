@@ -102,20 +102,29 @@
 
 + (NSString *)relativeFilePath:(NSString *)fullFilePath
 {
-	assert(fullFilePath != nil); // Ensure that the full file path is not nil
+    if(fullFilePath){
+        return nil;
+    }
+	//assert(fullFilePath != nil); // Ensure that the full file path is not nil
 
 	NSString *applicationPath = [ReaderDocument applicationPath]; // Get the application path
 
 	NSRange range = [fullFilePath rangeOfString:applicationPath]; // Look for the application path
 
-	assert(range.location != NSNotFound); // Ensure that the application path is in the full file path
-
+	//assert(range.location != NSNotFound); // Ensure that the application path is in the full file path
+    if(range.location != NSNotFound){
+        return nil;
+    }
+    
 	return [fullFilePath stringByReplacingCharactersInRange:range withString:@""]; // Strip it out
 }
 
 + (NSString *)archiveFilePath:(NSString *)filename
 {
-	assert(filename != nil); // Ensure that the archive file name is not nil
+    if(filename != nil){
+        return nil;
+    }
+    //; // Ensure that the archive file name is not nil
 
 	//NSString *archivePath = [ReaderDocument documentsPath]; // Application's "~/Documents" path
 
@@ -211,7 +220,11 @@
 			_pageNumber = [NSNumber numberWithInteger:1]; // Start on page 1
 
 			_fileName = [ReaderDocument relativeFilePath:fullFilePath]; // File name
-
+            if(_fileName == nil){
+                return self;
+                
+            }
+            
 			CFURLRef docURLRef = (__bridge CFURLRef)[self fileURL]; // CFURLRef from NSURL
 
 			CGPDFDocumentRef thePDFDocRef = CGPDFDocumentCreateX(docURLRef, _password);
