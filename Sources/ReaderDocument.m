@@ -121,7 +121,7 @@
 
 + (NSString *)archiveFilePath:(NSString *)filename
 {
-    if(filename != nil){
+    if(filename == nil){
         return nil;
     }
     //; // Ensure that the archive file name is not nil
