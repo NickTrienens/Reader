@@ -30,8 +30,8 @@
 
 -(void)dealloc{
 	
-	mainToolbar  = nil;
-	mainPagebar  = nil;
+	self.mainToolbar  = nil;
+	self.mainPagebar  = nil;
 	self.document = nil;
 }
 
@@ -148,19 +148,19 @@
 
 -(void)makeToolBarWithFrame:(CGRect)inFrame{
 	
-	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:inFrame document:self.document]; // At top
-	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	mainToolbar.delegate = self;
-    mainToolbar.showTitleInNavBar = self.showTitleInNavBar;
-	[self.view addSubview:mainToolbar];
+	self.mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:inFrame document:self.document]; // At top
+	self.mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	self.mainToolbar.delegate = self;
+    self.mainToolbar.showTitleInNavBar = self.showTitleInNavBar;
+	[self.view addSubview:self.mainToolbar];
 
 }
 
 -(void)makePageBarWithFrame:(CGRect)inFrame{
 	
-	mainPagebar = [[ReaderPageBarCollectionView alloc] initWithFrame:inFrame document:self.document]; // At bottom
-	mainPagebar.delegate = self;
-	[self.view addSubview:mainPagebar];
+	self.mainPagebar = [[ReaderPageBarCollectionView alloc] initWithFrame:inFrame document:self.document]; // At bottom
+	self.mainPagebar.delegate = self;
+	[self.view addSubview:self.mainPagebar];
 
 }
 
@@ -174,7 +174,7 @@
 -(void)viewWillAppear:(BOOL)animated{
 	
 	//[(UICollectionViewFlowLayout*)self.pdfPagesView.collectionViewLayout setItemSize: CGRectInset(self.pdfPagesView.bounds,5,0).size]; // Update content views
-    mainToolbar.showTitleInNavBar = self.showTitleInNavBar;
+   self.mainToolbar.showTitleInNavBar = self.showTitleInNavBar;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -230,7 +230,7 @@
 	
 	[self.pdfPagesView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:page-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 
-	[mainPagebar updatePagebar]; // Update the pagebar display
+	[self.mainPagebar updatePagebar]; // Update the pagebar display
 
 
 	
@@ -289,7 +289,7 @@
 		self.currentPage = tmpPage;//targetView.pageNumber;
 		self.document.pageNumber = @(self.currentPage);
 		
-		[mainPagebar updatePagebar]; // Update the pagebar display
+		[self.mainPagebar updatePagebar]; // Update the pagebar display
 		[self updateToolbarBookmarkIcon];
 	}
 
@@ -409,17 +409,17 @@
 			else // Nothing active tapped in the target content view
 			{
 			
-					if ((mainToolbar.hidden == YES) || (mainPagebar.hidden == YES))
+					if ((self.mainToolbar.hidden == YES) || (self.mainPagebar.hidden == YES))
 					{
-						[mainToolbar showToolbar];
-						[mainPagebar showPagebar]; // Show
+						[self.mainToolbar showToolbar];
+						[self.mainPagebar showPagebar]; // Show
 						
 						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1 && self.adjustStatusBar) {
 							[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 						}
 					}else{
-						[mainToolbar hideToolbar];
-						[mainPagebar hidePagebar]; // Hide
+						[self.mainToolbar hideToolbar];
+						[self.mainPagebar hidePagebar]; // Hide
 						if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1 && self.adjustStatusBar) {
 							[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 						}
@@ -512,7 +512,7 @@
 
 - (void)contentView:(ReaderContentView *)contentView touchesBegan:(NSSet *)touches
 {
-	if ((mainToolbar.hidden == NO) || (mainPagebar.hidden == NO))
+	if ((self.mainToolbar.hidden == NO) || (self.mainPagebar.hidden == NO))
 	{
 		if (touches.count == 1) // Single touches only
 		{
@@ -525,8 +525,8 @@
 			if (CGRectContainsPoint(areaRect, point) == false) return;
 		}
 		
-		[mainToolbar hideToolbar];
-		[mainPagebar hidePagebar]; // Hide
+		[self.mainToolbar hideToolbar];
+		[self.mainPagebar hidePagebar]; // Hide
 		
 	}
 }
@@ -671,12 +671,12 @@
 	
 	if ([self.document.bookmarks containsIndex:page]) // Remove bookmark
 	{
-		[mainToolbar setBookmarkState:NO];
+		[self.mainToolbar setBookmarkState:NO];
 		[self.document.bookmarks removeIndex:page];
 	}
 	else // Add the bookmarked page index to the bookmarks set
 	{
-		[mainToolbar setBookmarkState:YES];
+		[self.mainToolbar setBookmarkState:YES];
 		[self.document.bookmarks addIndex:page];
 	}
 }
@@ -707,7 +707,7 @@
 	
 	BOOL bookmarked = [self.document.bookmarks containsIndex:page];
 	
-	[mainToolbar setBookmarkState:bookmarked]; // Update
+	[self.mainToolbar setBookmarkState:bookmarked]; // Update
 }
 
 - (void)thumbsViewController:(ThumbsViewController *)viewController gotoPage:(NSInteger)page

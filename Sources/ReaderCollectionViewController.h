@@ -38,12 +38,11 @@
 @interface ReaderCollectionViewController : UIViewController<UIGestureRecognizerDelegate, MFMailComposeViewControllerDelegate, ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UICollectionViewDelegate,UINavigationBarDelegate>
 {
 	
-	ReaderMainToolbar *mainToolbar;
-	
-	ReaderPageBarCollectionView *mainPagebar;
 	
 
 }
+@property(strong) ReaderMainToolbar *mainToolbar;
+@property(strong) ReaderPageBarCollectionView *mainPagebar;
 
 @property(assign) NSInteger currentPage;
 @property(assign) NSInteger throttler;
