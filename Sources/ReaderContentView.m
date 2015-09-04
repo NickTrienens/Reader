@@ -53,6 +53,14 @@ static void *ReaderContentViewContext = &ReaderContentViewContext;
 @synthesize message;
 
 #pragma mark ReaderContentView functions
+static inline CGFloat ZoomScaleThatFitsWidth(CGSize target, CGSize source)
+{
+    CGFloat w_scale = (target.width / source.width);
+    
+    CGFloat h_scale = (target.height / source.height);
+    
+    return ((w_scale > h_scale) ? w_scale : h_scale);
+}
 
 static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 {
@@ -65,20 +73,33 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 
 #pragma mark ReaderContentView instance methods
 
-- (void)updateMinimumMaximumZoom
-{
-	CGRect targetRect = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
-
-	CGFloat zoomScale = ZoomScaleThatFits(targetRect.size, self.theContentView.bounds.size);
-
-	self.minimumZoomScale = zoomScale; // Set the minimum and maximum zoom scales
-	if(self.allowZooming){
-		self.maximumZoomScale = (zoomScale * ZOOM_LEVELS); // Max number of zoom levels
-	}else{
-		self.maximumZoomScale = zoomScale; 
-	}
-
-	zoomAmount = ((self.maximumZoomScale - self.minimumZoomScale) / ZOOM_LEVELS);
+- (void)updateMinimumMaximumZoom{
+    
+    CGRect targetRect = CGRectInset(self.bounds, CONTENT_INSET, CONTENT_INSET);
+    
+    CGFloat zoomScale = ZoomScaleThatFits(targetRect.size, self.theContentView.bounds.size);
+    if(  UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation] )){
+        zoomScale = ZoomScaleThatFits(targetRect.size, self.theContentView.bounds.size);
+        self.minimumZoomScale = zoomScale; // Set the minimum and maximum zoom scales
+        self.maximumZoomScale = (zoomScale * ZOOM_LEVELS); // Max number of zoom levels
+        zoomAmount = ((self.maximumZoomScale - self.minimumZoomScale) / ZOOM_LEVELS);
+        
+        if (self.zoomScale < self.minimumZoomScale){
+            self.zoomScale = self.minimumZoomScale;
+            [self setContentOffset:CGPointMake(0, 0)];
+        } else {
+            if (self.zoomScale > self.maximumZoomScale)	{
+                self.zoomScale = self.maximumZoomScale;
+            }
+        }
+        
+    }else{
+        self.minimumZoomScale = zoomScale; // Set the minimum and maximum zoom scales
+        self.maximumZoomScale = (zoomScale * ZOOM_LEVELS); // Max number of zoom levels
+        zoomAmount = ((self.maximumZoomScale - self.minimumZoomScale) / ZOOM_LEVELS);
+        
+    }
+    //DLog(@"updating ZoomLevels: %0.5f for page: %d", zoomScale, self.page );
 }
 
 - (id)initWithFrame:(CGRect)frame fileURL:(NSURL *)fileURL page:(NSUInteger)page password:(NSString *)phrase
@@ -104,7 +125,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 			theContainerView = [[UIView alloc] initWithFrame:self.theContentView.bounds];
 
 			theContainerView.autoresizesSubviews = NO;
-			theContainerView.userInteractionEnabled = NO;
+			theContainerView.userInteractionEnabled = YES;
 			theContainerView.contentMode = UIViewContentModeRedraw;
 			theContainerView.autoresizingMask = UIViewAutoresizingNone;
 			theContainerView.backgroundColor = [UIColor whiteColor];
