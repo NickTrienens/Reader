@@ -231,6 +231,13 @@
 	}
 }
 
+-(void)setShowTitleInNavBar:(BOOL)inBool{
+    if(inBool == NO){
+        self.item.title = nil;
+    }
+   // self.titleLabel.hidden = inBool;
+}
+
 #pragma mark UIButton action methods
 
 - (void)doneButtonTapped:(UIButton *)button

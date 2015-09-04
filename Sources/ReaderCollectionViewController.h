@@ -52,7 +52,7 @@
 - (id)initWithReaderDocument:(ReaderDocument *)object;
 @property(assign) BOOL adjustStatusBar;
 @property(strong) UICollectionView * pdfPagesView;
-
+@property(assign) BOOL showTitleInNavBar;
 
 -(void)showDocumentPage:(NSInteger)page;
 - (void)decrementPageNumber;

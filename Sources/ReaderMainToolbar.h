@@ -58,4 +58,6 @@
 - (void)hideToolbar;
 - (void)showToolbar;
 
+-(void)setShowTitleInNavBar:(BOOL)inBool;
+
 @end

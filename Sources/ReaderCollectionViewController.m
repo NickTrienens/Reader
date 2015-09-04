@@ -151,6 +151,7 @@
 	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:inFrame document:self.document]; // At top
 	mainToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	mainToolbar.delegate = self;
+    mainToolbar.showTitleInNavBar = self.showTitleInNavBar;
 	[self.view addSubview:mainToolbar];
 
 }
@@ -173,7 +174,7 @@
 -(void)viewWillAppear:(BOOL)animated{
 	
 	//[(UICollectionViewFlowLayout*)self.pdfPagesView.collectionViewLayout setItemSize: CGRectInset(self.pdfPagesView.bounds,5,0).size]; // Update content views
-
+    mainToolbar.showTitleInNavBar = self.showTitleInNavBar;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
