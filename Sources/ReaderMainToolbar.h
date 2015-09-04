@@ -59,5 +59,6 @@
 - (void)showToolbar;
 
 -(void)setShowTitleInNavBar:(BOOL)inBool;
+- (void)doneButtonTapped:(UIButton *)button;
 
 @end
